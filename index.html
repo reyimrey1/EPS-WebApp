@@ -134,6 +134,32 @@ html[data-theme=light] .audio-active .live-badge{background:#dcf2e6;border-color
 html[data-theme=light] .about-link{color:#566a85}html[data-theme=light] .copy{color:#7b8aa0}
 html[data-theme=light] .site-footer{border-top-color:#c5d1e0}
 
+/* ===== v5 ===== */
+.toast.has-action{pointer-events:auto}.toast-action{margin-left:12px;background:#d5fa47;color:#101827;border:0;border-radius:8px;padding:6px 11px;font-weight:850;font-size:12px;cursor:pointer;font-family:inherit}
+html[data-theme=light] .toast-action{background:#7fd13b}
+.sel-no{flex:none;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;border:2px solid transparent;color:transparent;background:transparent}
+.sel-no.on{border-color:var(--lime);color:var(--lime)}
+.result-edit-vma{white-space:nowrap}.result-table td:last-child{min-width:108px}.live-head{flex-wrap:wrap}.lane-mode{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px;font-size:12px;color:var(--muted)}
+.lane-mode select{background:#0f1a2b;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 9px;font:inherit;font-size:12px}
+html[data-theme=light] .lane-mode select{background:#fff;border-color:#a9b9cf}
+
+.import-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.import-option{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#101b2b;min-width:0}
+.import-option-head{display:flex;gap:9px;align-items:flex-start}
+.import-number{width:25px;height:25px;display:grid;place-items:center;flex:none;border-radius:8px;background:#26374e;color:var(--lime);font-size:11px;font-weight:950}
+.import-option strong{display:block;font-size:12px;line-height:1.4}
+.import-option p{margin:3px 0 0;color:var(--muted);font-size:10px;line-height:1.45}
+.import-option .btn{white-space:normal;text-align:center;width:100%;margin-top:auto}
+.manual-modal{max-width:620px;width:100%;background:#152238;border:1px solid #344862;border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.manual-modal h3{font-size:20px;margin:0 0 8px}
+.manual-modal p{font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 16px}
+.manual-modal label{display:block;font-size:11px;color:var(--label);font-weight:800;margin:10px 0 6px}
+.manual-modal input,.manual-modal textarea{width:100%;background:#0c1625;border:1px solid #2e4059;color:var(--text);border-radius:10px;padding:11px;font:inherit;font-size:13px}
+.manual-modal textarea{min-height:220px;resize:vertical;line-height:1.55}
+.manual-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:14px}
+html[data-theme=light] .import-option{background:#f7f9fc}
+html[data-theme=light] .manual-modal input,html[data-theme=light] .manual-modal textarea{background:#fff;color:#172236;border-color:#b8c5d6}
+@media(max-width:650px){.import-options{grid-template-columns:1fr}.import-option{min-height:0}}
 </style>
 </head>
 <body>
@@ -144,7 +170,7 @@ html[data-theme=light] .site-footer{border-top-color:#c5d1e0}
   </header>
 
   <div class="hero">
-    <div class="hero-main"><div class="eyebrow">Outil de terrain pour professeurs d'EPS</div><h1>Le test Luc Léger.<br><span class="accent">Plus simple à piloter.</span></h1><p>Importe ta liste (Excel, CSV ou Massar), lance la bande-son officielle, suis les élèves sur le terrain animé et enregistre leur palier, leur repère de 15 s et leur VMA d'un simple toucher.</p></div>
+    <div class="hero-main"><div class="eyebrow">Outil de terrain pour professeurs d'EPS</div><h1>Le test Luc Léger.<br><span class="accent">Plus simple à piloter.</span></h1><p>Importe la liste selon l’une des quatre méthodes, lance la bande-son officielle et enregistre le palier, le repère vocal et la VMA des élèves. La séance suivante reprend à partir du classeur Massar standard exporté.</p></div>
     <div class="hero-dash" aria-label="État de la séance">
       <div class="dash-head"><span class="dash-title">Tableau de bord</span><span class="pill">◉ <span id="globalState">Prêt pour une séance</span></span></div>
       <div class="dash-grid">
@@ -155,14 +181,22 @@ html[data-theme=light] .site-footer{border-top-color:#c5d1e0}
       </div>
     </div>
   </div>
-  <div class="steps" aria-label="Étapes de la séance"><div class="step active" id="step1"><span class="step-num">1</span> Préparer</div><div class="step-line"></div><div class="step" id="step2"><span class="step-num">2</span> Faire passer le test</div><div class="step-line"></div><div class="step" id="step3"><span class="step-num">3</span> Exporter</div></div>
+  <div class="steps" aria-label="Étapes de la séance"><div class="step active" id="step1"><span class="step-num">1</span> Préparer</div><div class="step-line"></div><div class="step" id="step2"><span class="step-num">2</span> Faire passer le test</div><div class="step-line"></div><div class="step" id="step3"><span class="step-num">3</span> Bilan</div></div>
 
   <section id="setupView" class="setup-view">
     <div class="grid-setup">
       <div class="card">
-        <div class="card-head"><div><div class="card-title">Importer la classe</div><div class="card-desc">Charge un fichier Excel/CSV, ou la liste exportée de <b>Massar</b> (noms en arabe, classe lue dans le nom du fichier). L'ordre des lignes sera conservé dans les exports.</div></div><div class="num-badge">01</div></div>
+        <div class="card-head"><div><div class="card-title">Importer la liste des élèves</div><div class="card-desc">Choisis l’une des quatre méthodes. Quel que soit le fichier d’origine, le site conserve l’ordre des élèves et prépare le même bilan final.</div></div><div class="num-badge">01</div></div>
         <div id="dropzone" class="dropzone">
-          <div class="upload-icon">↥</div><strong>Glisse ton fichier ici</strong><p>Formats acceptés : .xlsx, .xls, .csv (le CSV marche aussi sans Internet)<br>La première feuille du classeur sera utilisée.</p><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn btn-secondary" id="chooseFileBtn" type="button">Choisir un fichier (Excel / CSV)</button><button class="btn btn-primary" id="chooseMassarBtn" type="button">📥 Importer une liste Massar (.xlsx)</button></div><input id="fileInput" type="file" accept=".xlsx,.xls,.csv" hidden><input id="massarInput" type="file" accept=".xlsx,.xls" hidden></div>
+          <div class="upload-icon">↥</div><strong>Glisse un fichier Excel ici pour le détecter automatiquement</strong><p>Tu peux aussi choisir directement l’une des quatre méthodes ci-dessous.</p>
+          <div class="import-options">
+            <div class="import-option"><div class="import-option-head"><span class="import-number">1</span><div><strong>Liste Massar de contrôle</strong><p>Importe seulement le numéro Massar et le nom. Le site cherche la classe dans le nom du fichier ; s’il ne la trouve pas, il te la demande.</p></div></div><button class="btn btn-secondary" id="chooseMassarBtn" type="button">Importer la liste Massar</button></div>
+            <div class="import-option"><div class="import-option-head"><span class="import-number">2</span><div><strong>Classeur EPS : mesures et tests</strong><p>Importe les élèves et conserve les mesures/tests déjà présents. La classe est demandée au professeur, car elle n’est pas dans le nom du fichier.</p></div></div><button class="btn btn-secondary" id="chooseSportBtn" type="button">Importer le classeur EPS</button></div>
+            <div class="import-option"><div class="import-option-head"><span class="import-number">3</span><div><strong>Saisie manuelle</strong><p>Écris ou colle les élèves. Tu peux indiquer leur numéro Massar avant le nom.</p></div></div><button class="btn btn-secondary" id="manualEntryBtn" type="button">Saisir les élèves</button></div>
+            <div class="import-option"><div class="import-option-head"><span class="import-number">4</span><div><strong>Modèle Excel vierge EPSMART</strong><p>Télécharge le modèle Massar original (droite-à-gauche, couleurs et bordures conservées), complète les élèves et les mesures souhaitées, puis importe-le. À la séance suivante, tu peux aussi importer ici le fichier Massar standard exporté pour reprendre le test.</p></div></div><a class="btn btn-ghost" href="templates/massar-evaluation-vierge.xlsx" download="Modele_Massar_EPSMART_Vierge.xlsx">⇩ Télécharger le modèle Excel vierge</a><button class="btn btn-primary" id="chooseBlankFilledBtn" type="button">Importer le modèle rempli / fichier de reprise</button></div>
+          </div>
+          <input id="massarInput" type="file" accept=".xlsx,.xls" hidden><input id="sportInput" type="file" accept=".xlsx,.xls" hidden><input id="blankFilledInput" type="file" accept=".xlsx,.xls" hidden>
+        </div>
         <div id="fileInfo" class="file-info"><div class="file-type">XLSX</div><div class="file-meta"><strong id="fileName">Liste importée</strong><span id="fileCount">0 élèves détectés</span></div><button id="removeFileBtn" class="btn btn-ghost btn-small" type="button" aria-label="Retirer le fichier">✕</button></div>
         <div class="field-grid">
           <div class="field"><label for="startSpeed">Vitesse de départ (km/h)</label><input id="startSpeed" type="number" min="5" max="15" step="0.5" value="8.5"><span class="field-hint">Bande-son Luc Léger officielle : départ à 8,5 km/h (palier 1), +0,5 km/h par palier.</span></div>
@@ -172,17 +206,17 @@ html[data-theme=light] .site-footer{border-top-color:#c5d1e0}
         </div>
         <div class="audio-panel">
           <div class="audio-panel-title">🔊 Synchronisation avec une vraie bande-son</div>
-          <p>Le son est lu par le lecteur de cette page (tu l'entends en même temps que l'animation) et son horloge pilote les avatars. <b>La bande-son est d'abord téléchargée en entier dans l'appareil</b>, puis lue depuis sa mémoire : aucune coupure possible pendant le test, même si le réseau tombe.</p>
+          <p>La bande-son officielle est <b>intégrée au site</b> : elle se charge toute seule dans l'appareil (une seule fois, environ 10 Mo), puis elle est lue depuis sa mémoire. Le son s'entend en même temps que l'animation et ne peut plus être coupé par le réseau.</p>
           <div class="audio-source-row" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 8px">
-            <button id="downloadTrackBtn" class="btn btn-primary btn-small" type="button">① ⬇ Télécharger la bande-son dans l'appareil</button>
+            <button id="downloadTrackBtn" class="btn btn-primary btn-small" type="button">↻ Recharger la bande-son</button>
           </div>
           <div id="dlWrap" class="hidden" style="height:7px;background:var(--line);border-radius:5px;overflow:hidden;margin:0 0 8px"><div id="dlBar" style="height:100%;width:0;background:var(--lime);transition:width .2s"></div></div>
-          <details style="margin:4px 0 8px"><summary style="cursor:pointer;font-size:11px;color:var(--label);font-weight:750">Le téléchargement automatique échoue ? Importer le MP3 à la main</summary>
+          <details style="margin:4px 0 8px"><summary style="cursor:pointer;font-size:11px;color:var(--label);font-weight:750">Le chargement automatique échoue ? Importer le MP3 à la main</summary>
             <div style="margin-top:8px"><a id="downloadMp3Link" href="https://fitdistance.io/assets/audio/luc-leger-20mn.mp3" download="luc-leger-20mn.mp3" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-small" style="text-decoration:none">⬇ Ouvrir / télécharger le MP3</a></div>
             <label for="audioFile" style="display:block;font-size:11px;color:var(--label);font-weight:750;margin:8px 0">② Importer le MP3 téléchargé depuis l'ordinateur</label>
             <input id="audioFile" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg" aria-label="Importer le MP3 du test Luc Léger">
           </details>
-          <div class="field-hint" style="margin:0 0 8px">ⓘ La bande-son du test Luc Léger est protégée par le droit d'auteur : elle n'est pas incluse dans cette page. Elle est téléchargée sur ton appareil pour un <b>usage personnel ou scolaire</b>, sans redistribution ni usage commercial.</div>
+          <div class="field-hint" style="margin:0 0 8px">ⓘ La bande-son du test Luc Léger est protégée par le droit d'auteur : elle est fournie avec l'outil pour un <b>usage personnel ou scolaire</b>, sans usage commercial. Les droits restent à leurs titulaires.</div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><div id="audioFileStatus" class="audio-file-status" style="flex:1">Aucune bande-son importée — clique sur « Télécharger la bande-son dans l’appareil ».</div><button id="clearAudioBtn" class="btn btn-ghost btn-small" type="button">Retirer la bande-son</button><button id="forgetTrackBtn" class="btn btn-ghost btn-small hidden" type="button" title="Supprime la copie gardée sur cet appareil">Supprimer de l’appareil</button></div>
           <audio id="referenceAudio" class="audio-player hidden" controls preload="metadata"></audio>
           
@@ -194,49 +228,78 @@ html[data-theme=light] .site-footer{border-top-color:#c5d1e0}
       </div>
       <div class="card students-card">
         <div class="card-head"><div><div class="card-title">Sélectionner les participants</div><div class="card-desc">Coche les élèves du groupe qui court maintenant (un couloir par élève, numéroté dans l'ordre). Les autres seront traités après le test : testés dans un autre groupe, ou absent / malade / dispensé.</div></div><div class="num-badge">02</div></div>
-        <div class="student-tools"><input id="studentSearch" class="search" type="search" placeholder="Rechercher un élève ou une classe…" aria-label="Rechercher un élève"><span class="count-pill"><span id="selectedCount">0</span> sélectionné(s)</span><button id="selectAllBtn" class="btn btn-ghost btn-small" type="button">Tout cocher</button><button id="selectNoneBtn" class="btn btn-ghost btn-small" type="button">Tout décocher</button><button id="selectNextBtn" class="btn btn-ghost btn-small" type="button" title="Coche les 15 prochains élèves pas encore testés">15 suivants</button></div>
+        <div class="student-tools"><button id="addStudentSetupBtn" class="btn btn-primary btn-small" type="button">＋ Ajouter un élève</button><input id="studentSearch" class="search" type="search" placeholder="Rechercher un élève ou une classe…" aria-label="Rechercher un élève"><span class="count-pill"><span id="selectedCount">0</span> sélectionné(s)</span><button id="selectAllBtn" class="btn btn-ghost btn-small" type="button">Tout cocher</button><button id="selectNoneBtn" class="btn btn-ghost btn-small" type="button">Tout décocher</button><button id="selectNextBtn" class="btn btn-ghost btn-small" type="button" title="Coche les 15 prochains élèves pas encore testés">15 suivants</button></div>
+        <div class="lane-mode hidden" id="laneModeRow"><label for="laneMode">Numéros de couloir des groupes suivants :</label><select id="laneMode"><option value="continue">Continuer la numérotation</option><option value="restart">Repartir de 1 à chaque groupe</option></select></div>
         <div id="studentList" class="student-list"><div class="empty-list">Aucun fichier importé.<br><b>Importe d'abord la liste Excel</b> pour afficher les élèves ici.</div></div>
         <div class="setup-footer"><div class="helper">Les élèves restent dans l'ordre du fichier d'origine. Avant l'affichage des résultats, la page te demandera le motif des élèves qui n'ont pas couru (absent, malade, dispensé, autre).</div><button id="startBtn" class="btn btn-primary start-btn" type="button" disabled>Lancer la séance <span>→</span></button></div>
       </div>
     </div>
-    <div class="smallprint">Confidentialité : cette version traite la liste directement dans ton navigateur. Elle ne transmet pas les données à un serveur. Évite toutefois d'utiliser un appareil partagé sans fermer la page après la séance.</div>
+    <div class="smallprint">Continuité : le fichier Excel final au format Massar conserve la liste dans son ordre d’origine et les VMA déjà obtenues. Réimporte ce même fichier à la séance suivante : les VMA présentes seront reconnues et les élèves dont la cellule VMA est vide resteront à tester. Aucune donnée d’élève n’est envoyée au serveur.</div>
   </section>
 
   <section id="liveView" class="live-view hidden">
     <div class="rotate-note"><b>Conseil :</b> tourne le téléphone en paysage pour profiter au mieux du terrain animé.</div>
-    <div class="live-head"><div class="live-title"><div class="num-badge" style="background:var(--lime);color:#111827;width:42px;height:42px">▶</div><div><h2>Terrain de test<span id="groupLabel" style="color:var(--muted);font-weight:600"></span></h2><p><span id="liveParticipantCount">0</span> participants · Toucher le <b>nom</b> d’un élève pour enregistrer son arrêt.</p></div></div><div class="live-badge"><span class="status-dot"></span><span id="liveStatusText">PRÊT</span></div></div>
+    <div class="live-head"><div class="live-title"><div class="num-badge" style="background:var(--lime);color:#111827;width:42px;height:42px">▶</div><div><h2>Terrain de test<span id="groupLabel" style="color:var(--muted);font-weight:600"></span></h2><p><span id="liveParticipantCount">0</span> participants · Toucher le <b>nom</b> d’un élève pour enregistrer son arrêt.</p></div></div><button id="addStudentLiveBtn" class="btn btn-primary btn-small" type="button">＋ Ajouter un participant</button><div class="live-badge"><span class="status-dot"></span><span id="liveStatusText">PRÊT</span></div></div>
     <div class="metrics"><div class="metric"><div class="metric-label">Temps écoulé</div><div class="metric-value" id="elapsedTime">00:00</div></div><div class="metric"><div class="metric-label">Palier actuel</div><div class="metric-value"><span id="currentLevel">01</span> <small id="quarterLabel"></small></div></div><div class="metric"><div class="metric-label">Vitesse cible</div><div class="metric-value"><span id="currentSpeed">8.5</span> <small>km/h</small></div></div><div class="metric"><div class="metric-label">Élèves arrêtés</div><div class="metric-value"><span id="stoppedCount">0</span><small> / <span id="totalLiveCount">0</span></small></div></div></div>
     <div class="progress-wrap"><div class="progress-bar" id="levelProgress"></div></div>
     <div class="track-shell"><div class="track-top"><strong>SIMULATION DU TERRAIN <span style="color:var(--muted);font-weight:500">· <span id="trackDistance">20</span> mètres</span></strong><div class="track-ends"><span><span class="cone-icon">▲</span> LIGNE A</span><span style="color:#51647c">↔</span><span><span class="cone-icon">▲</span> LIGNE B</span><span class="pill" style="padding:5px 8px">🔊 Bips <span id="soundLabel">activés</span></span></div></div><div class="track-labels"><span>Élève · toucher le nom</span><span style="text-align:center" title="Numéro de couloir">N°</span><span>Déplacement animé</span><span style="text-align:right">Résultat</span></div><div id="trackBoard" class="track-board"></div></div>
     <div id="audioClockNote" class="sync-clock-note hidden">🔗 <b>Horloge audio active :</b> les avatars suivent la position de lecture de la bande-son. Ne déplace pas le curseur du lecteur pendant le test. <span style="white-space:nowrap">Recalage avatars : <button type="button" class="btn btn-ghost btn-small" data-nudge="-0.05">−0,05 s</button> <button type="button" class="btn btn-ghost btn-small" data-nudge="0.05">+0,05 s</button> <b id="nudgeValue"></b></span></div>
-    <div class="live-controls"><div class="controls-left"><button id="pauseBtn" class="btn btn-secondary" type="button">Ⅱ Pause</button><button id="soundBtn" class="btn btn-secondary" type="button">🔊 Son : oui</button><button id="undoBtn" class="btn btn-ghost" type="button" disabled>↶ Annuler dernier arrêt</button></div><div class="controls-right"><button class="btn btn-ghost theme-toggle" id="themeBtnLive" type="button" aria-label="Changer de thème">☀ Mode clair</button><button id="nextGroupLiveBtn" class="btn btn-primary hidden" type="button">⏭ Groupe suivant</button><button id="finishBtn" class="btn btn-danger" type="button">Terminer la séance ↗</button></div></div>
+    <div class="live-controls"><div class="controls-left"><button id="pauseBtn" class="btn btn-secondary" type="button">Ⅱ Pause</button><button id="restartBtn" class="btn btn-ghost" type="button" title="Relancer le test depuis le début (départ raté)">↻ Redémarrer le test</button><button id="soundBtn" class="btn btn-secondary" type="button">🔊 Son : oui</button><button id="undoBtn" class="btn btn-ghost" type="button" disabled>↶ Annuler dernier arrêt</button></div><div class="controls-right"><button class="btn btn-ghost theme-toggle" id="themeBtnLive" type="button" aria-label="Changer de thème">☀ Mode clair</button><button id="nextGroupLiveBtn" class="btn btn-primary hidden" type="button">⏭ Groupe suivant</button><button id="finishBtn" class="btn btn-danger" type="button">Enregistrer et terminer ↗</button></div></div>
     <div class="notice">Le bip marque le changement de direction dans cette simulation. Un arrêt enregistré contient le palier en cours, les navettes comptées, la vitesse cible et le temps écoulé. Le suivi visuel est une aide de pilotage et ne remplace pas la bande-son officielle utilisée lors d'une épreuve standardisée.</div>
   </section>
 
   <section id="resultsView" class="results-view hidden">
-    <div class="results-top"><div><div class="eyebrow">Séance terminée</div><h2>Résultats de la classe</h2><p id="resultSubtitle">Les résultats sont affichés dans l'ordre du fichier importé.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="backBtn" class="btn btn-secondary" type="button">← Retour à la préparation</button><button id="nextGroupBtn" class="btn btn-primary" type="button">＋ Tester un autre groupe</button><button id="newSessionBtn" class="btn btn-ghost" type="button">Nouvelle séance</button></div></div>
-    <div class="result-kpis"><div class="result-kpi"><div class="klabel">Élèves importés</div><div id="kpiAll" class="kvalue">0</div></div><div class="result-kpi"><div class="klabel">Participants</div><div id="kpiSelected" class="kvalue">0</div></div><div class="result-kpi"><div class="klabel">Arrêts enregistrés</div><div id="kpiStopped" class="kvalue" style="color:var(--lime)">0</div></div></div>
-    <div class="table-wrap"><table class="result-table"><thead><tr><th>#</th><th>Nom et prénom</th><th>Classe</th><th>Couloir</th><th>Participant</th><th>Palier enregistré</th><th>Navettes du palier</th><th>Vitesse du palier (km/h)</th><th>Repère (voix)</th><th>VMA affinée (km/h)</th><th>Navettes cumulées</th><th>Temps</th><th>Observation</th></tr></thead><tbody id="resultTableBody"></tbody></table></div>
-    <div class="result-actions"><div class="helper" style="font-size:11px;color:var(--muted);line-height:1.5">L'export Excel conserve toutes les lignes d'origine et ajoute les résultats. L'export PDF (via l'impression « Enregistrer au format PDF », compatible avec l'arabe) résume les colonnes essentielles.</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="exportExcelBtn" class="btn btn-primary" type="button">⇩ Exporter Excel (.xlsx)</button><button id="exportPdfBtn" class="btn btn-secondary" type="button">⇩ Exporter PDF</button></div></div>
+    <div class="results-top"><div><div class="eyebrow">Bilan de la classe</div><h2>Résultats de la classe</h2><p id="resultSubtitle">Les résultats sont affichés dans l'ordre du fichier importé.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="backBtn" class="btn btn-secondary" type="button">← Retour à la préparation</button><button id="nextGroupBtn" class="btn btn-primary" type="button">＋ Tester un autre groupe</button><button id="newSessionBtn" class="btn btn-ghost" type="button">Retour à la préparation</button></div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px"><button id="addStudentResultsBtn" class="btn btn-primary btn-small" type="button">＋ Ajouter un élève</button><button id="motifEditBtn" class="btn btn-ghost btn-small" type="button">Modifier les motifs des non-testés</button></div><div class="result-kpis"><div class="result-kpi"><div class="klabel">Élèves importés</div><div id="kpiAll" class="kvalue">0</div></div><div class="result-kpi"><div class="klabel">Participants</div><div id="kpiSelected" class="kvalue">0</div></div><div class="result-kpi"><div class="klabel">Arrêts enregistrés</div><div id="kpiStopped" class="kvalue" style="color:var(--lime)">0</div></div></div>
+    <div class="table-wrap"><table class="result-table"><thead><tr><th>#</th><th>Nom et prénom</th><th>Classe</th><th>Couloir</th><th>Participant</th><th>Palier enregistré</th><th>Navettes du palier</th><th>Vitesse du palier (km/h)</th><th>Repère (voix)</th><th>VMA affinée (km/h)</th><th>Navettes cumulées</th><th>Temps</th><th>Observation</th><th>Action</th></tr></thead><tbody id="resultTableBody"></tbody></table></div>
+    <div class="result-actions"><div class="helper" style="font-size:11px;color:var(--muted);line-height:1.5">Trois sorties distinctes : 1) le PDF habituel, inchangé ; 2) un Excel qui reprend le même bilan et la classe ; 3) le classeur Massar officiel, avec la liste et les numéros dans le même ordre, la VMA remplie en colonne F et les élèves non passés laissés vides. Le 3e fichier sert aussi à reprendre la séance suivante.</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="exportPdfBtn" class="btn btn-secondary" type="button">⇩ 1. Exporter PDF</button><button id="exportSummaryExcelBtn" class="btn btn-secondary" type="button">⇩ 2. Bilan Excel</button><button id="exportMassarBtn" class="btn btn-primary" type="button">⇩ 3. Excel Massar standard / reprise</button></div></div>
   </section>
   <footer class="site-footer"><button id="aboutBtn" class="about-link" type="button">À propos de nous</button><div class="copy" id="copyLine">© 2027 EPSMART — Tous droits réservés</div></footer>
 </div>
-<div id="motifBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="motifTitle"><div class="motif-modal"><h3 id="motifTitle" style="margin:0 0 6px">Élèves qui n'ont pas couru</h3><p style="margin:0 0 6px;color:var(--muted);font-size:13px;line-height:1.5">Indique le motif de chacun : il sera inscrit dans les résultats et dans le PDF (ligne colorée sur toute la largeur).</p><div class="motif-bulk"><span>Tous les restants :</span><button class="chip" data-bulk="Absent" type="button">Absent</button><button class="chip" data-bulk="Malade" type="button">Malade</button><button class="chip" data-bulk="Dispensé" type="button">Dispensé</button><button class="chip" data-bulk="later" type="button">Plus tard</button></div><div id="motifList"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:14px"><span id="motifMissing" style="font-size:12px;color:var(--muted)"></span><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="motifBackBtn" class="btn btn-secondary" type="button">← Retour au test</button><button id="motifNextBtn" class="btn btn-secondary hidden" type="button">⏭ Groupe suivant (sans motif)</button><button id="motifOkBtn" class="btn btn-primary" type="button">Valider et voir les résultats</button></div></div></div></div>
+<div id="manualBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="manualTitle"><div class="manual-modal"><h3 id="manualTitle">Saisie manuelle de la liste</h3><p>Colle une ligne par élève. Tu peux écrire <b>Numéro Massar ; Nom et prénom</b>, ou simplement le nom si tu n’as pas le numéro. Les colonnes peuvent aussi être séparées par une tabulation.</p><label for="manualClassInput">Classe</label><input id="manualClassInput" type="text" placeholder="Ex. 2BACSM1"><label for="manualStudentsInput">Liste des élèves</label><textarea id="manualStudentsInput" placeholder="D161028285 ; قدادري مروة&#10;D162004340 ; الصغير محمد أمين&#10;J144095935 ; اسم التلميذ"></textarea><div class="manual-actions"><button id="manualCancelBtn" class="btn btn-ghost" type="button">Annuler</button><button id="manualSaveBtn" class="btn btn-primary" type="button">Valider la liste</button></div></div></div>
+<div id="motifBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="motifTitle"><div class="motif-modal"><h3 id="motifTitle" style="margin:0 0 6px">Élèves qui n'ont pas couru</h3><p style="margin:0 0 6px;color:var(--muted);font-size:13px;line-height:1.5">Tu peux indiquer un motif (absent, malade, dispensé). Sans motif, l’élève reste « À tester » et sera disponible lors de la prochaine séance.</p><div class="motif-bulk"><span>Tous les restants :</span><button class="chip" data-bulk="Absent" type="button">Absent</button><button class="chip" data-bulk="Malade" type="button">Malade</button><button class="chip" data-bulk="Dispensé" type="button">Dispensé</button><button class="chip" data-bulk="later" type="button">Plus tard</button></div><div id="motifList"></div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:14px"><span id="motifMissing" style="font-size:12px;color:var(--muted)"></span><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="motifBackBtn" class="btn btn-secondary" type="button">← Retour au test</button><button id="motifNextBtn" class="btn btn-secondary hidden" type="button">⏭ Groupe suivant (sans motif)</button><button id="motifOkBtn" class="btn btn-primary" type="button">Valider et voir les résultats</button></div></div></div></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="countdown" class="countdown hidden"><div><div class="count-number" id="countdownNumber">3</div><p>Préparez-vous · le test commence</p></div></div>
 <div id="modalBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><h3 id="modalTitle">Mode d'emploi</h3><p id="modalText">Importe une feuille Excel avec une ligne d'en-têtes, sélectionne les participants et lance le test. Pendant l'épreuve, touche le nom de l'élève qui s'arrête. À la fin, exporte les résultats en Excel ou en PDF.</p><div class="modal-actions"><button id="modalClose" class="btn btn-primary" type="button">Compris</button></div></div></div>
 <script>
-// Bibliothèque optionnelle (export .xlsx ; la lecture .xlsx et le PDF fonctionnent sans bibliothèque) : on essaie d'abord le dossier « lib/ » à côté de la page (hors ligne),
-// puis Internet. Si rien n'est disponible, la page utilise ses outils intégrés (CSV + impression PDF) et reste 100 % fonctionnelle hors ligne.
-(function(){function load(local,cdn){return new Promise(res=>{const t=(u,next)=>{const e=document.createElement('script');e.src=u;e.async=false;e.onload=()=>res(true);e.onerror=()=>next?next():res(false);document.head.appendChild(e);};t(local,()=>t(cdn,null));});}
-load('lib/xlsx.full.min.js','https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
+// Bibliothèque Excel compatible avec la conservation des styles du modèle Massar lors de l'export.
+// Elle est chargée depuis un CDN ; le lecteur XLSX léger intégré reste indépendant pour détecter les listes.
+(function(){function load(primary,fallback){return new Promise(res=>{const t=(u,next)=>{const e=document.createElement('script');e.src=u;e.async=false;e.onload=()=>res(true);e.onerror=()=>next?next():res(false);document.head.appendChild(e);};t(primary,()=>t(fallback,null));});}
+window.EPSMART_XLSX_READY=load('https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js','https://unpkg.com/xlsx-js-style@1.2.0/dist/xlsx.bundle.js');
+window.EPSMART_JSZIP_READY=load('https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js','https://unpkg.com/jszip@3.10.1/dist/jszip.min.js');
 })();
 </script>
+<script>window.EPSMART_MASSAR_TEMPLATE_BASE64="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";</script>
 <script>
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
-const state={students:[],headers:[],filename:'',stage:'setup',started:false,paused:false,sound:true,sessionStart:0,lastBeepAt:0,nextBeepAt:0,level:1,speed:8.0,shuttleLength:20,levelDuration:60,speedIncrement:.5,startSpeed:8.0,shuttlesTotal:0,shuttlesInLevel:0,eventLevel:1,direction:1,raf:0,countdownTimer:0,stopHistory:[],audioCtx:null,lastToastTimer:0,referenceAudio:null,audioObjectURL:'',audioMode:false,audioStartOffset:0,audioTimeline:[],audioTimelineDuration:0};
+async function ensureXlsxReady(){if(window.XLSX)return true;if(window.EPSMART_XLSX_READY)await window.EPSMART_XLSX_READY;return !!window.XLSX;}
+async function ensureJSZipReady(){if(window.JSZip)return true;if(window.EPSMART_JSZIP_READY)await window.EPSMART_JSZIP_READY;return !!window.JSZip;}
+const state={students:[],headers:[],filename:'',stage:'setup',started:false,paused:false,sound:true,sessionStart:0,lastBeepAt:0,nextBeepAt:0,level:1,speed:8.0,shuttleLength:20,levelDuration:60,speedIncrement:.5,startSpeed:8.0,shuttlesTotal:0,shuttlesInLevel:0,eventLevel:1,direction:1,raf:0,countdownTimer:0,stopHistory:[],audioCtx:null,lastToastTimer:0,referenceAudio:null,audioObjectURL:'',audioMode:false,audioStartOffset:0,audioTimeline:[],audioTimelineDuration:0,massar:false,group:1,selSeq:0,laneMode:'continue',numbering:'voice',lastProtocol:'audio',sourceWorkbookData:null,sourceWorkbookName:'',saveTimer:0};
+const SESSION_KEY='epsmart-luc-leger-session-v3';
+function bufferToBase64(buffer){const bytes=new Uint8Array(buffer);let binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+0x8000,bytes.length)));return btoa(binary);}
+function base64ToBuffer(value){const binary=atob(value),bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return bytes.buffer;}
+function saveSessionNow(){
+ if(!state.students.length){try{localStorage.removeItem(SESSION_KEY);}catch(e){}return true;}
+ try{
+  // Garde aussi le classeur source (mesures et autres tests) dans la sauvegarde locale,
+  // quand sa taille reste raisonnable. Le fichier de reprise exporté reste prioritaire pour changer d'appareil.
+  const sourceWorkbookBase64=state.sourceWorkbookData&&state.sourceWorkbookData.byteLength<=2000000?bufferToBase64(state.sourceWorkbookData):'';
+  const snap={version:3,savedAt:Date.now(),students:state.students.map(x=>({...x,raw:{...(x.raw||{})},rawHeaders:[...(x.rawHeaders||[])]})),headers:[...state.headers],filename:state.filename,massar:!!state.massar,group:state.group||1,selSeq:state.selSeq||0,laneMode:state.laneMode||'continue',numbering:state.numbering||'voice',lastProtocol:state.lastProtocol||'audio',startSpeed:state.startSpeed,speedIncrement:state.speedIncrement,levelDuration:state.levelDuration,shuttleLength:state.shuttleLength,stage:state.stage,sourceWorkbookBase64,sourceWorkbookName:state.sourceWorkbookName||''};
+  localStorage.setItem(SESSION_KEY,JSON.stringify(snap));return true;
+ }catch(e){console.warn('Sauvegarde locale impossible',e);return false;}
+}
+function scheduleSave(){clearTimeout(state.saveTimer);state.saveTimer=setTimeout(()=>{if(!saveSessionNow())showToast('Stockage local saturé : exporte une sauvegarde Excel.');},250);}
+function restoreSavedSession(){
+ try{const raw=localStorage.getItem(SESSION_KEY);if(!raw)return false;const snap=JSON.parse(raw);if(!snap||snap.version!==3||!Array.isArray(snap.students)||!snap.students.length)return false;
+  state.students=snap.students;state.headers=Array.isArray(snap.headers)?snap.headers:[];state.filename=snap.filename||'';state.massar=!!snap.massar;state.group=snap.group||1;state.selSeq=snap.selSeq||0;state.laneMode=snap.laneMode||'continue';state.numbering=snap.numbering||'voice';state.lastProtocol=snap.lastProtocol||'audio';state.startSpeed=Number(snap.startSpeed)||8.5;state.speedIncrement=Number(snap.speedIncrement)||.5;state.levelDuration=Number(snap.levelDuration)||60;state.shuttleLength=Number(snap.shuttleLength)||20;state.sourceWorkbookData=snap.sourceWorkbookBase64?base64ToBuffer(snap.sourceWorkbookBase64):null;state.sourceWorkbookName=snap.sourceWorkbookName||'';
+  state.students.forEach((x,i)=>{x.id=Number(x.id)||i+1;x.selected=!!x.selected&&!x.result;x.status=x.result?'stopped':(x.selected?'active':'unselected');x.position=0;});
+  if($('startSpeed'))$('startSpeed').value=state.startSpeed;if($('speedIncrement'))$('speedIncrement').value=state.speedIncrement;if($('levelDuration'))$('levelDuration').value=state.levelDuration;if($('shuttleLength'))$('shuttleLength').value=state.shuttleLength;if($('laneMode'))$('laneMode').value=state.laneMode;if($('palierNumbering'))$('palierNumbering').value=state.numbering;
+  $('fileName').textContent=state.filename||'Séance récupérée';$('fileCount').textContent=`Séance récupérée · ${state.students.length} élèves · ${state.students.filter(x=>x.result).length} résultats conservés`;$('fileInfo').classList.add('visible');document.querySelector('#fileInfo .file-type').textContent='AUTO';return true;
+ }catch(e){console.warn('Récupération de séance impossible',e);return false;}
+}
+function clearSavedSession(){try{localStorage.removeItem(SESSION_KEY);}catch(e){}}
 const SIGNATURE='© 2027 EPSMART — Tous droits réservés';
 function applyTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('epsmart-theme',t);}catch(e){}
  document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=t==='light'?'🌙 Mode sombre':'☀ Mode clair');
@@ -249,37 +312,68 @@ function updateHero(){
  $('dashStudents').textContent=st.length;const sel=st.filter(x=>x.selected).length;$('dashSelected').textContent=sel+' coché'+(sel>1?'s':'');
  const tested=st.filter(x=>x.result).length;$('dashGroup').textContent=state.group||1;$('dashTested').textContent=tested+' testé'+(tested>1?'s':'')+' / '+st.length;
  const ready=typeof trackReady==='function'&&trackReady();
- $('dashAudio').textContent=ready?'Prête':(state.audioMode?'Chargement…':'Non chargée');
- $('dashAudioDot').className='dot '+(ready?'ok':state.audioMode?'warn':'off');
- $('dashAudioSub').textContent=ready?'En mémoire · aucune coupure possible':(state.audioMode?'Patiente quelques secondes':'Télécharge la piste avant le test');
+ const busy=state.audioLoading||(state.audioMode&&!ready);
+ $('dashAudio').textContent=ready?'Prête':(busy?'Chargement'+(state.audioLoading&&state.audioPct?' '+state.audioPct+' %':'…'):'Non chargée');
+ $('dashAudioDot').className='dot '+(ready?'ok':busy?'warn':'off');
+ $('dashAudioSub').textContent=ready?'En mémoire · aucune coupure possible':(busy?'Patiente quelques secondes':'Clique sur « Recharger la bande-son »');
 }
 function openAbout(){$('modalTitle').textContent='À propos de nous';
- $('modalText').innerHTML=`<span class="about-sec"><b>EPSMART</b>Des outils numériques pensés pour les professeurs d’EPS : simples à utiliser sur le terrain, même avec peu ou pas de connexion.</span><span class="about-sec"><b>Cet outil : test Luc Léger (navette 20 m)</b>Il synchronise la bande-son officielle avec une animation du terrain, enregistre l’arrêt de chaque élève (palier, repère de 15 s, VMA) et exporte les résultats en Excel ou en PDF.</span><span class="about-sec"><b>Tes données restent chez toi</b>La liste d’élèves est traitée dans le navigateur de cet appareil. Elle n’est envoyée à aucun serveur.</span><span class="about-sec"><b>Bande-son</b>Protégée par le droit d’auteur, elle n’est pas incluse dans l’outil : elle est téléchargée sur l’appareil pour un usage personnel ou scolaire.</span><span class="about-sec">Conception : Radouane Imrani</span><span class="about-sec" style="color:var(--muted)">${SIGNATURE}</span>`;
+ $('modalText').innerHTML=`<span class="about-sec"><b>EPSMART</b>Des outils numériques pensés pour les professeurs d’EPS : simples à utiliser sur le terrain, même avec peu ou pas de connexion.</span><span class="about-sec"><b>Cet outil : test Luc Léger (navette 20 m)</b>Il synchronise la bande-son officielle avec une animation du terrain, enregistre l’arrêt de chaque élève (palier, repère de 15 s, VMA) et exporte les résultats en Excel ou en PDF.</span><span class="about-sec"><b>Tes données restent chez toi</b>La liste et les résultats sont traités dans le navigateur. Le fichier final Massar contient les numéros, les noms et les VMA ; il peut être réimporté pour reprendre le test. Aucune donnée d’élève n’est transmise au serveur.</span><span class="about-sec"><b>Bande-son</b>Protégée par le droit d’auteur, elle est fournie avec l’outil pour un usage personnel ou scolaire, sans usage commercial. Les droits restent à leurs titulaires.</span><span class="about-sec">Conception : Radouane Imrani</span><span class="about-sec" style="color:var(--muted)">${SIGNATURE}</span>`;
  $('modalBackdrop').classList.remove('hidden');}
 function canAuto(x){return !x.result&&(!x.motif||x.motif==='later');}
-function closeRun(m){releaseAwake();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();state.started=false;state.paused=false;cancelAnimationFrame(state.raf);clearTimeout(state.countdownTimer);$('countdown').classList.add('hidden');selectedStudents().filter(x=>!x.result).forEach(x=>{x.result={...m,source:'Séance clôturée'};x.status='closed';});}
+function closeRun(){stopLiveAndKeepPending();}
 function goNextGroup(){
- state.students.forEach(x=>{if(x.result)x.selected=false;});
+ state.students.forEach(x=>{if(x.result){x.selected=false;x.selOrder=0;}});
  if(!state.students.some(canAuto)){showToast('Tous les élèves sont passés (ou ont un motif).');renderResults();setView('results');return;}
  state.group=(state.group||1)+1;
- state.students.forEach(x=>{x.selected=false;});let n=0;for(const x of state.students){if(canAuto(x)&&n<15){x.selected=true;n++;}}
- renderStudents();setView('setup');showToast(`Groupe ${state.group} : ${n} élève(s) cochés (couloirs 1 à ${n}). Vérifie la sélection puis lance le test.`);
+ state.students.forEach(x=>{x.selected=false;x.selOrder=0;});
+ saveSessionNow();renderStudents();setView('setup');
+ showToast(`Groupe ${state.group} : coche les élèves qui courent maintenant (ou « 15 suivants »).`);
 }
 function nextGroupFromLive(){
  if(!state.started)return;const remaining=selectedStudents().filter(x=>!x.result).length;
- if(remaining&&!confirm(`${remaining} élève(s) n’ont pas été arrêtés individuellement : leur palier actuel sera enregistré (« Séance clôturée »). Terminer ce groupe et passer au suivant ?`))return;
- closeRun(currentMetrics());goNextGroup();
+ if(remaining&&!confirm(`${remaining} élève(s) n’ont pas encore de résultat. Ils resteront « À tester » et pourront passer lors d’une prochaine séance. Continuer ?`))return;
+ stopLiveAndKeepPending();goNextGroup();
 }
-function showToast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(state.lastToastTimer);state.lastToastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
+function stopLiveAndKeepPending(){releaseAwake();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();state.started=false;state.paused=false;cancelAnimationFrame(state.raf);clearTimeout(state.countdownTimer);$('countdown').classList.add('hidden');selectedStudents().filter(x=>!x.result).forEach(x=>{x.selected=false;x.selOrder=0;x.status='unselected';});saveSessionNow();}
+function showToast(message,action){const el=$('toast');el.textContent=message;el.classList.remove('has-action');if(action){const b=document.createElement('button');b.type='button';b.className='toast-action';b.textContent=action.label;b.onclick=()=>{el.classList.remove('show');action.fn();};el.appendChild(b);el.classList.add('has-action');}el.classList.add('show');clearTimeout(state.lastToastTimer);state.lastToastTimer=setTimeout(()=>el.classList.remove('show'),action?6500:2600)}
 function norm(s){return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function matchesHeader(headers,patterns){const exact=headers.find(h=>patterns.some(p=>norm(h)===p));if(exact)return exact;const ordered=[...patterns].sort((a,b)=>b.length-a.length);return headers.find(h=>ordered.some(p=>norm(h).includes(p)))||''}
+function massarIdHeaderScore(value){
+ const h=normForMatch(value),c=h.replace(/[^a-z0-9\u0600-\u06FF]/g,'');
+ // Priorité au numéro officiel Massar, pas à l'éventuel ID technique interne.
+ if(c==='رقمالتلميذ'||c==='رقمالطالب'||c==='رقممسار')return 130;
+ if(/رقم.*(التلميذ|الطالب|مسار)/.test(h)||/رمز.*(التلميذ|الطالب)/.test(h))return 125;
+ if(/code.*massar/.test(h)||/numero.*massar/.test(h)||/num.*massar/.test(h))return 125;
+ if(/code.*eleve/.test(h)||/numero.*eleve/.test(h)||/student.*(number|id)/.test(h)||/learner.*id/.test(h))return 115;
+ if(/id.*massar/.test(h)||/massar.*id/.test(h))return 110;
+ if(h==='matricule'||h==='numero eleve')return 85;
+ if(c==='id')return 5; // dernier recours seulement
+ return 0;
+}
+function massarIdValueScore(value){
+ const v=String(value??'').trim();
+ // Les codes alphanumériques préfixés (ex. D161028285) sont plus probants qu'un ID interne numérique court.
+ if(/^[A-Z]{1,2}\d{7,}$/i.test(v))return 190;
+ if(/^\d{10,}$/.test(v))return 65;
+ return 0;
+}
+function pickMassarIdHeader(headers,rows=[]){
+ let best='',bestScore=0;
+ for(let i=0;i<(headers||[]).length;i++){
+  const h=headers[i],headerScore=massarIdHeaderScore(h);if(!headerScore)continue;
+  const quality=Math.max(0,...(rows||[]).slice(0,12).map(r=>massarIdValueScore(Array.isArray(r)?r[i]:(r&&typeof r==='object'?r[h]:''))));
+  const score=headerScore+quality;if(score>bestScore){bestScore=score;best=h;}
+ }
+ return best;
+}
 function parseRows(json,headers){
- const allNorm=headers.map(h=>[h,norm(h)]);
  let full=matchesHeader(headers,['nom et prenom','nom prenom','nom complet','fullname','eleve','nom de l eleve','student name','name']);
  let last=matchesHeader(headers,['nom','last name','lastname','family name']);
  let first=matchesHeader(headers,['prenom','first name','firstname','given name']);
  let cl=matchesHeader(headers,['classe','class','groupe','group','niveau','section']);
  let sex=matchesHeader(headers,['sexe','genre','sex','gender']);
+ const idHeader=pickMassarIdHeader(headers,json);
  if(!full && last && first){full='';}
  const rawRows=[];
  json.forEach((raw,idx)=>{
@@ -289,7 +383,8 @@ function parseRows(json,headers){
   else if(last&&first)display=[String(raw[first]??'').trim(),String(raw[last]??'').trim()].filter(Boolean).join(' ');
   else {const candidate=headers.find(h=>String(raw[h]??'').trim()!=='');display=candidate?String(raw[candidate]).trim():'';}
   if(!display)display=`Élève ${idx+1}`;
-  rawRows.push({id:rawRows.length+1,sourceRow:idx+2,displayName:display,className:cl?String(raw[cl]??'').trim():'',sex:sex?String(raw[sex]??'').trim():'',raw:{...raw},selected:true,result:null,status:'active',position:0,rawHeaders:[...headers]});
+  const massarCode=idHeader?String(raw[idHeader]??'').trim():'';
+  rawRows.push({id:rawRows.length+1,sourceRow:idx+2,displayName:display,className:cl?String(raw[cl]??'').trim():'',sex:sex?String(raw[sex]??'').trim():'',massarCode,raw:{...raw},selected:true,result:null,status:'active',position:0,rawHeaders:[...headers]});
  });
  return rawRows;
 }
@@ -297,14 +392,21 @@ function renderStudents(){
  const list=$('studentList'),q=norm($('studentSearch').value);const filtered=state.students.filter(s=>!q&&!$('studentSearch').value.trim()||norm(s.displayName+' '+s.className).includes(q)||String(s.displayName).includes($('studentSearch').value.trim()));
  if(!state.students.length){list.innerHTML='<div class="empty-list">Aucun fichier importé.<br><b>Importe d’abord la liste Excel</b> pour afficher les élèves ici.</div>';}
  else if(!filtered.length){list.innerHTML='<div class="empty-list">Aucun élève ne correspond à la recherche.</div>';}
- else{list.innerHTML=filtered.map(s=>`<label class="student-row ${s.result?'tested':''}"><input type="checkbox" data-student="${s.id}" ${s.selected?'checked':''} ${s.result?'disabled':''} aria-label="Sélectionner ${escapeHTML(s.displayName)}"><span class="student-index">${String(s.id).padStart(2,'0')}</span><span class="student-ident"><strong dir="auto">${escapeHTML(s.displayName)}</strong><span>${escapeHTML(s.className||s.sex||'Classe non renseignée')}</span></span>${s.result?`<span class="tested-tag">✓ testé · VMA ${vmaText(s.result)}</span>`:(s.motif&&s.motif!=='later'?`<span class="tested-tag" style="color:var(--muted)">${escapeHTML(motifLabel(s))}</span>`:'')}</label>`).join('');list.querySelectorAll('input[data-student]').forEach(cb=>cb.addEventListener('change',()=>{const s=state.students.find(x=>x.id===Number(cb.dataset.student));if(s)s.selected=cb.checked;updateSelectionCount()}));}
+ else{list.innerHTML=filtered.map(s=>`<label class="student-row ${s.result?'tested':''}"><input type="checkbox" data-student="${s.id}" ${s.selected?'checked':''} ${s.result?'disabled':''} aria-label="Sélectionner ${escapeHTML(s.displayName)}"><span class="sel-no" data-sel-no="${s.id}"></span><span class="student-index">${String(s.id).padStart(2,'0')}</span><span class="student-ident"><strong dir="auto">${escapeHTML(s.displayName)}</strong><span>${escapeHTML(s.className||s.sex||'Classe non renseignée')}</span></span>${s.result?`<span class="tested-tag">✓ testé · VMA ${vmaText(s.result)}</span>`:(s.motif&&s.motif!=='later'?`<span class="tested-tag" style="color:var(--muted)">${escapeHTML(motifLabel(s))}</span>`:'')}</label>`).join('');list.querySelectorAll('input[data-student]').forEach(cb=>cb.addEventListener('change',()=>{const s=state.students.find(x=>x.id===Number(cb.dataset.student));if(s)setSel(s,cb.checked);updateSelectionCount()}));}
  updateSelectionCount();
 }
 function escapeHTML(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function updateSelectionCount(){if(typeof updateHero==='function')updateHero();const n=state.students.filter(s=>s.selected).length;$('selectedCount').textContent=n;$('startBtn').disabled=n===0||state.students.length===0;$('globalState').textContent=state.students.length?`${state.students.length} élèves importés`:'Prêt pour une séance'}
-function resetImport(){state.massar=false;state.students=[];state.headers=[];state.filename='';$('fileInput').value='';$('fileInfo').classList.remove('visible');$('studentSearch').value='';renderStudents()}
-// ---------- Lecture .xlsx SANS bibliothèque (fonctionne hors ligne) : zip + deflate natif du navigateur ----------
-async function zipEntries(buf){
+function updateSelectionCount(){if(typeof updateHero==='function')updateHero();if(typeof refreshSelBadges==='function')refreshSelBadges();const n=state.students.filter(s=>s.selected&&!s.result).length;$('selectedCount').textContent=n;$('startBtn').disabled=n===0||state.students.length===0;$('globalState').textContent=state.students.length?`${state.students.length} élèves importés`:'Prêt pour une séance';scheduleSave();}
+function resetImport(){state.massar=false;state.students=[];state.headers=[];state.filename='';state.sourceWorkbookData=null;state.sourceWorkbookName='';state.stopHistory=[];clearSavedSession();['massarInput','sportInput','blankFilledInput'].forEach(id=>{if($(id))$(id).value='';});$('fileInfo').classList.remove('visible');$('studentSearch').value='';renderStudents()}
+// ---------- Lecture .xlsx : conversion systématique en ArrayBuffer avant DataView / SheetJS ----------
+function asArrayBuffer(input){
+ if(input instanceof ArrayBuffer)return input;
+ if(ArrayBuffer.isView(input))return input.buffer.slice(input.byteOffset,input.byteOffset+input.byteLength);
+ if(input&&typeof input.arrayBuffer==='function')return input.arrayBuffer();
+ throw new Error('Données Excel illisibles : impossible de convertir le fichier en ArrayBuffer.');
+}
+async function zipEntries(input){
+ const buf=await asArrayBuffer(input);
  const u8=new Uint8Array(buf),dv=new DataView(buf);let e=u8.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;
  if(e<0)throw new Error('Fichier .xlsx invalide.');
  const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);const map={};
@@ -342,31 +444,63 @@ async function xlsxGrids(buf){
 function normAr(t){return String(t??'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[إأآٱ]/g,'ا').replace(/ى/g,'ي').replace(/\s+/g,' ').trim();}
 function massarClassFromFilename(name){
  const base=String(name||'').replace(/\.[^.]+$/,'');const tk=base.split(/[_\s]+/).filter(Boolean);
- const i=tk.findIndex(t=>/notes?/i.test(t));
- for(const t of (i>=0?tk.slice(i+1):tk)){if(/^\d+$/.test(t)||/^\(\d+\)$/.test(t))continue;if(/[A-Za-z\u0600-\u06FF]/.test(t))return t;}
+ const i=tk.findIndex(t=>/notes?/i.test(t));if(i<0)return '';
+ const stop=/^(export|exports|sport|massar|copie|copy|final|fichier|notes?|controle|contrôle|controles|contrôles|control|devoir|devoirs|test|tests|cc\d*|ds\d*|semestre|s[12]|v\d+|\(\d+\))$/i;
+ for(const t of tk.slice(i+1)){if(/^\d+$/.test(t)||stop.test(t))continue;if(/[A-Za-z\u0600-\u06FF]/.test(t))return t;}
  return '';
 }
-function parseMassarGrid(grid,filename){
- let hr=-1,cName=-1,cCode=-1,cBirth=-1,cId=-1;
+function parseMassarGrid(grid,filename,options={}){
+ let hr=-1,cName=-1,cCode=-1,cBirth=-1,cId=-1,cVma=-1;
  for(let r=0;r<Math.min(grid.length,60);r++){const row=grid[r];if(!row)continue;
   row.forEach((v,c)=>{const t=normAr(v);if(!t)return;
-   if(/^اسم التلميذ|^اسم الطالب/.test(t)){hr=r;cName=c;}
-   if(/^رقم التلميذ|^رمز التلميذ|^رقم الطالب/.test(t)&&cCode<0)cCode=c;
+   if(isStudentNameHeader(v)||/^اسم التلميذ|^اسم الطالب/.test(t)){hr=r;cName=c;}
+   if(options.readVma!==false&&isVmaHeader(v)&&cVma<0)cVma=c;
    if(/تاريخ الازدياد/.test(t)&&cBirth<0)cBirth=c;
    if(t==='ID'&&cId<0)cId=c;});
   if(hr>=0)break;}
  if(hr<0)return null;
- for(let r=Math.max(0,hr-3);r<=hr+1;r++){const row=grid[r]||[];row.forEach((v,c)=>{const t=normAr(v);if(cId<0&&t==='ID')cId=c;if(cCode<0&&/^رقم التلميذ/.test(t))cCode=c;if(cBirth<0&&/تاريخ الازدياد/.test(t))cBirth=c;});}
+ // Certains classeurs contiennent deux identifiants : on compare aussi la forme des valeurs.
+ // Un code du type D161028285 est prioritaire sur un identifiant technique numérique court.
+ const header=grid[hr]||[];let bestIdScore=0;
+ header.forEach((v,c)=>{
+  const headerScore=massarIdHeaderScore(v);if(headerScore){
+   const quality=Math.max(0,...grid.slice(hr+1,hr+13).map(row=>massarIdValueScore(row&&row[c])));
+   const score=headerScore+quality;if(score>bestIdScore){bestIdScore=score;cCode=c;}
+  }
+  const t=normAr(v);if(cId<0&&t==='ID')cId=c;if(cBirth<0&&/تاريخ الازدياد/.test(t))cBirth=c;
+  if(options.readVma!==false&&cVma<0&&isVmaHeader(v))cVma=c;
+ });
+ if(cCode<0&&cId>=0)cCode=cId;
  let cls=massarClassFromFilename(filename);
  if(!cls){for(const row of grid.slice(0,30)){if(!row)continue;row.forEach((v,c)=>{if(!cls&&/^القسم/.test(normAr(v))){for(let k=c+1;k<row.length;k++){if(String(row[k]??'').trim()){cls=String(row[k]).trim();break;}}}});}}
- const out=[];let empty=0;
+ const out=[];let empty=0,existingVmaCount=0,unmappedVmaCount=0;
  for(let r=hr+1;r<grid.length;r++){const row=grid[r]||[];const nm=String(row[cName]??'').trim();
   if(!nm){if(out.length&&++empty>=3)break;continue;}empty=0;
   if(/^(النقطة|التغيب|ملاحظات)/.test(normAr(nm)))continue;
-  out.push({id:out.length+1,sourceRow:r+1,displayName:nm,className:cls,sex:'',selected:false,result:null,status:'unselected',position:0,
-   raw:{'Classe':cls,'Nom (Massar)':nm,'Code élève (Massar)':String(row[cCode]??'').trim(),'ID Massar':String(row[cId]??'').trim(),'Date de naissance':String(row[cBirth]??'').trim()},
-   rawHeaders:['Classe','Nom (Massar)','Code élève (Massar)','ID Massar','Date de naissance']});}
- return out.length?{students:out,className:cls}:null;
+  const rawVma=cVma>=0?String(row[cVma]??'').trim().replace(',','.'):'';
+  const numericVma=rawVma!==''&&Number.isFinite(Number(rawVma))?Number(rawVma):null;
+  const existingResult=numericVma!=null&&numericVma>0?resultFromExistingMassarVma(numericVma):null;
+  if(existingResult){existingVmaCount++;if(existingResult.mappingUnavailable)unmappedVmaCount++;}
+  const massarCode=cCode>=0?String(row[cCode]??'').trim():(cId>=0?String(row[cId]??'').trim():'');
+  out.push({id:out.length+1,sourceRow:r+1,displayName:nm,className:cls,sex:'',massarCode,selected:false,result:existingResult,status:existingResult?'stopped':'unselected',position:0,
+   raw:{'Classe':cls,'Nom (Massar)':nm,'Code élève (Massar)':massarCode,'ID Massar':String(row[cId]??'').trim(),'Date de naissance':String(row[cBirth]??'').trim(),'VMA existante (Massar)':numericVma??''},
+   rawHeaders:['Classe','Nom (Massar)','Code élève (Massar)','ID Massar','Date de naissance','VMA existante (Massar)']});}
+ return out.length?{students:out,className:cls,existingVmaCount,unmappedVmaCount}:null;
+}
+function resultFromExistingMassarVma(value){
+ const n=Number(value);if(!Number.isFinite(n)||n<=0)return null;
+ // Les valeurs hors plage du protocole sont conservées comme données à vérifier, mais ne bloquent pas l'élève.
+ if(n<8||n>18.375)return {level:0,k:0,speed:n,quarter:0,vma:n,totalShuttles:0,levelShuttles:0,elapsed:0,time:'—',source:'VMA Massar à vérifier',importedVma:true,manualVma:true,mappingUnavailable:true};
+ const mapped=nearestVmaMapping(n);
+ return {...mapped,vma:n,source:'VMA déjà présente dans Massar',importedVma:true,manualVma:Math.abs(mapped.vma-n)>0.001};
+}
+function classFromFilename(name){
+ const base=String(name||'').replace(/\.[^.]+$/,'');
+ const uniform=base.match(/^EPSMART_MassarVMA_(.+)$/i);if(uniform)return decodeURIComponent(uniform[1]).replace(/_/g,' ').trim();
+ if(/notes?/i.test(base)){const c=massarClassFromFilename(name);if(c)return c;}
+ const stop=/^(epsmart|massarvma|export|exports|exporté|sport|massar|notes?|notescc|liste|listes|classe|classes|eleves?|élèves?|resultats?|résultats?|cc\d*|ds\d*|controle|contrôle|controles|contrôles|control|devoir|devoirs|test|tests|copie|copy|final|fichier|modele|modèle|vierge|evaluation|évaluation|v\d+)$/i;
+ const tk=base.replace(/\(\d+\)/g,' ').split(/[_\s-]+/).filter(t=>t&&!/^\d+$/.test(t)&&!stop.test(t));
+ return tk.find(t=>/\d/.test(t)&&/[A-Za-z\u0600-\u06FF]/.test(t))||tk[0]||'';
 }
 function csvToRows(buf){
  let txt=new TextDecoder('utf-8').decode(buf);if(txt.includes('\uFFFD'))txt=new TextDecoder('windows-1252').decode(buf);txt=txt.replace(/^\uFEFF/,'');
@@ -382,37 +516,138 @@ function csvToRows(buf){
  const heads=out[0].map((h,i)=>String(h).trim()||('Colonne '+(i+1)));
  return out.slice(1).map(r=>{const o={};heads.forEach((h,i)=>o[h]=(r[i]??'').toString().trim());return o;});
 }
-async function importFile(file,forceMassar){if(!file)return;try{const buf=await file.arrayBuffer();let rows;
- if(/\.xlsx$/i.test(file.name)){try{const sheets=await xlsxGrids(buf);for(const sh of sheets){const res=parseMassarGrid(sh.grid,file.name);if(res){state.headers=Object.keys(res.students[0].raw);state.students=res.students;state.filename=file.name;state.stopHistory=[];state.massar=true;$('fileName').textContent=file.name;$('fileCount').textContent=`Massar · classe ${res.className||'?'} · ${res.students.length} élèves`;document.querySelector('#fileInfo .file-type').textContent='MASSAR';$('fileInfo').classList.add('visible');renderStudents();showToast(`Liste Massar importée : ${res.students.length} élèves${res.className?' · classe '+res.className:''}. Coche les participants.`);return;}}}catch(e){if(forceMassar){showToast('Import Massar impossible : '+e.message);return;}}if(forceMassar){showToast('Ce fichier ne ressemble pas à une liste Massar (colonne « اسم التلميذ » introuvable).');return;}}
- state.massar=false;if(window.XLSX){const wb=XLSX.read(buf,{type:'array'});const ws=wb.Sheets[wb.SheetNames[0]];if(!ws)throw new Error('Aucune feuille trouvée.');rows=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false});}else if(/\.(csv|tsv|txt)$/i.test(file.name)){rows=csvToRows(buf);}else{showToast('Hors ligne : le lecteur Excel n’est pas disponible. Enregistre ta liste en CSV (Fichier › Enregistrer sous › CSV UTF-8) puis importe-la.');return;}if(!rows.length)throw new Error('La feuille semble vide ou sans ligne d’en-têtes.');const headers=Object.keys(rows[0]||{});if(!headers.length)throw new Error('Aucune colonne détectée.');const parsed=parseRows(rows,headers);if(!parsed.length)throw new Error('Aucun élève détecté.');state.headers=headers;state.students=parsed;state.filename=file.name;document.querySelector('#fileInfo .file-type').textContent='XLSX';state.stopHistory=[];$('fileName').textContent=file.name;$('fileCount').textContent=`${parsed.length} lignes élèves · ${headers.length} colonnes détectées`;$('fileInfo').classList.add('visible');renderStudents();showToast(`${parsed.length} élèves importés avec succès.`);}catch(e){showToast('Import impossible : '+e.message);}}
-function selectedStudents(){return state.students.filter(s=>s.selected)}
+// Une nouvelle importation remplace intégralement la liste précédente : aucune fusion avec l'ancien stockage local.
+
+function isMassarModelWorkbook(sheets){
+ return (sheets||[]).some(sh=>{const grid=sh.grid||[];const hasTitle=grid.slice(0,4).some(row=>(row||[]).some(v=>normForMatch(v).includes('الاختبارات البدنية')));if(!hasTitle)return false;return grid.slice(0,80).some(row=>{const vals=row||[];return vals.some(isStudentNameHeader)&&vals.some(isVmaHeader)&&vals.some(isStudentIdHeader);});});
+}
+function classFromImportedName(fileName,mode,sheetClass=''){
+ const inferred=classFromFilename(fileName)||String(sheetClass||'').trim();
+ const isUniform=/^EPSMART_MassarVMA_/i.test(String(fileName||''));
+ if(isUniform&&inferred)return inferred;
+ if(mode==='sport'||mode==='blank-filled'){
+  const answer=prompt('Ce classeur ne contient pas le nom de la classe. Saisis la classe à afficher dans le PDF et le nom du fichier exporté :',inferred||'');
+  return answer===null?null:String(answer).trim();
+ }
+ if(inferred)return inferred;
+ const answer=prompt('Le nom du fichier ne permet pas de reconnaître la classe. Saisis le nom de la classe :','');
+ return answer===null?null:String(answer).trim();
+}
+function setImportedClass(students,cls){students.forEach(x=>{x.className=cls;if(x.raw)x.raw['Classe']=cls;});}
+function showImportedRoster(file,students,headers,typeLabel,message){
+ // Remplacement strict : les résultats d'un ancien fichier ou du localStorage ne doivent jamais être fusionnés.
+ state.headers=headers||[];state.students=(students||[]).map((x,i)=>({...x,id:Number(x.id)||i+1,massarCode:(String(x.massarCode??'').trim()||studentMassarCode(x)),selected:!!x.selected&&!x.result,selOrder:0,position:0,status:x.result?'stopped':'unselected'}));
+ state.filename=file.name;state.stopHistory=[];state.group=1;state.selSeq=0;state.started=false;state.paused=false;state.stage='setup';
+ $('fileName').textContent=file.name;$('fileCount').textContent=`${state.students.length} élèves · ${typeLabel} · ${[...new Set(state.students.map(x=>x.className).filter(Boolean))].join(', ')||'classe non renseignée'}`;
+ document.querySelector('#fileInfo .file-type').textContent=typeLabel.toUpperCase().slice(0,8);$('fileInfo').classList.add('visible');renderStudents();saveSessionNow();showToast(message);
+}
+function rowsToGrid(wb){
+ return wb.SheetNames.map(name=>({name,grid:XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:''})}));
+}
+async function importFile(file,mode='auto'){
+ if(!file)return;
+ try{
+  const buf=await file.arrayBuffer();let sheets=[];
+  if(/\.xlsx$/i.test(file.name))sheets=await xlsxGrids(buf);
+  else if(/\.xls$/i.test(file.name)){if(!await ensureXlsxReady())throw new Error('Le lecteur .xls n’a pas pu être chargé. Réessaie avec une connexion Internet ou convertis le fichier en .xlsx.');const wb=XLSX.read(await asArrayBuffer(buf),{type:'array'});sheets=rowsToGrid(wb);}
+  else if(/\.(csv|tsv|txt)$/i.test(file.name)){
+   const rows=csvToRows(new Uint8Array(buf));if(!rows.length)throw new Error('Le fichier CSV ne contient pas de liste exploitable.');
+   const heads=Object.keys(rows[0]);const parsed=parseRows(rows,heads);if(!parsed.length)throw new Error('Aucun élève détecté.');
+   const cls=classFromImportedName(file.name,mode);if(cls===null)return;if(!cls)throw new Error('Le nom de la classe est obligatoire.');setImportedClass(parsed,cls);
+   state.sourceWorkbookData=null;state.sourceWorkbookName='';state.massar=false;showImportedRoster(file,parsed,heads,'CSV',`${parsed.length} élèves importés en CSV · classe ${cls}.`);return;
+  }else throw new Error('Format non pris en charge. Utilise un fichier .xlsx ou .xls.');
+
+  // Les anciennes feuilles techniques EPSMART_SESSION ne font plus autorité : seules les cellules visibles du fichier importé (notamment VMA) comptent.
+  const fitness=isMassarModelWorkbook(sheets);
+  if((mode==='sport'||mode==='blank-filled')&&!fitness)throw new Error('Ce fichier ne correspond pas au modèle EPS anthropométrique attendu : il faut les en-têtes arabes, la colonne VMA et les colonnes numéro/nom.');
+  let parsedResult=null;
+  for(const sh of sheets){
+   const r=parseMassarGrid(sh.grid,file.name,{readVma:mode!=='massar-roster'});
+   if(r){parsedResult=r;break;}
+  }
+  if(parsedResult){
+   const cls=classFromImportedName(file.name,fitness?(mode==='auto'?'sport':mode):mode,parsedResult.className);if(cls===null)return;if(!cls)throw new Error('Le nom de la classe est obligatoire.');
+   setImportedClass(parsedResult.students,cls);
+   const keepFitnessWorkbook=fitness&&mode!=='massar-roster';
+   state.sourceWorkbookData=keepFitnessWorkbook?(await asArrayBuffer(buf)).slice(0):null;state.sourceWorkbookName=keepFitnessWorkbook?file.name:'';state.massar=true;
+   state.headers=Object.keys(parsedResult.students[0].raw||{});
+   const nVma=mode==='massar-roster'?0:(parsedResult.existingVmaCount||0);
+   const label=mode==='massar-roster'?'Massar contrôle':(fitness?'Classeur EPS':'Excel Massar');
+   const warnings=parsedResult.unmappedVmaCount?` · ${parsedResult.unmappedVmaCount} VMA à vérifier`:'';
+   showImportedRoster(file,parsedResult.students,state.headers,label,`${parsedResult.students.length} élèves importés · classe ${cls} · ${nVma} VMA présentes dans le fichier reconnues${warnings}. Les résultats locaux d'une autre importation ne sont pas repris.`);
+   return;
+  }
+  if(mode==='massar-roster'||mode==='sport'||mode==='blank-filled')throw new Error('Aucune liste élève reconnue. Vérifie la ligne des en-têtes, le numéro Massar et le nom.');
+  if(!await ensureXlsxReady())throw new Error('Le lecteur Excel n’est pas disponible. Connecte-toi au site puis recharge la page.');
+  const wb=XLSX.read(await asArrayBuffer(buf),{type:'array'}),ws=wb.Sheets[wb.SheetNames[0]];if(!ws)throw new Error('Aucune feuille trouvée.');
+  const rows=XLSX.utils.sheet_to_json(ws,{defval:'',raw:false});if(!rows.length)throw new Error('La feuille semble vide ou sans ligne d’en-têtes.');
+  const heads=Object.keys(rows[0]||{}),parsed=parseRows(rows,heads);if(!parsed.length)throw new Error('Aucun élève détecté.');
+  const cls=classFromImportedName(file.name,mode);if(cls===null)return;if(!cls)throw new Error('Le nom de la classe est obligatoire.');setImportedClass(parsed,cls);
+  state.sourceWorkbookData=null;state.sourceWorkbookName='';state.massar=false;showImportedRoster(file,parsed,heads,'Excel',`${parsed.length} élèves importés · classe ${cls}.`);
+ }catch(e){console.error(e);showToast('Import impossible : '+e.message);}
+}
+function openManualEntry(){
+ $('manualClassInput').value=[...new Set(state.students.map(x=>x.className).filter(Boolean))][0]||'';
+ $('manualStudentsInput').value='';$('manualBackdrop').classList.remove('hidden');
+}
+function saveManualEntry(){
+ const cls=$('manualClassInput').value.trim(),txt=$('manualStudentsInput').value;
+ if(!cls){showToast('Saisis le nom de la classe.');$('manualClassInput').focus();return;}
+ const lines=txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!lines.length){showToast('Ajoute au moins un élève dans la liste.');$('manualStudentsInput').focus();return;}
+ const students=[];
+ for(const line of lines){
+  const parts=line.split(/[;\t|]/).map(x=>x.trim()).filter((x,i)=>i===0||x!=='');let code='',name='';
+  if(parts.length>1){code=parts[0];name=parts.slice(1).join(' ').trim();}
+  else{const m=line.match(/^([A-Z]\d{7,})\s+(.+)$/i);if(m){code=m[1];name=m[2].trim();}else name=line;}
+  if(!name)continue;
+  const raw={'رقم التلميذ':code,'الاسم والنسب':name,'Classe':cls};
+  students.push({id:students.length+1,sourceRow:students.length+4,displayName:name,className:cls,sex:'',massarCode:code,raw,selected:false,result:null,status:'unselected',position:0,rawHeaders:Object.keys(raw),motif:'',motifText:''});
+ }
+ if(!students.length){showToast('Aucun nom d’élève valide n’a été détecté.');return;}
+ state.sourceWorkbookData=null;state.sourceWorkbookName='';state.massar=false;state.headers=Object.keys(students[0].raw);state.students=students;state.filename=`Saisie manuelle - ${cls}`;state.stopHistory=[];state.group=1;state.selSeq=0;state.started=false;state.paused=false;state.stage='setup';
+ $('manualBackdrop').classList.add('hidden');$('fileName').textContent=state.filename;$('fileCount').textContent=`${state.students.length} élèves · saisie manuelle · classe ${cls}`;document.querySelector('#fileInfo .file-type').textContent='MANUEL';$('fileInfo').classList.add('visible');renderStudents();saveSessionNow();showToast(`${state.students.length} élèves ajoutés à la classe ${cls}.`);
+}
+function addStudentPrompt(context='setup'){const name=prompt('Nom et prénom de l’élève :');if(!name||!name.trim())return;const code=prompt('Numéro Massar (facultatif) :','')||'';const cls=prompt('Classe de l’élève :', [...new Set(state.students.map(x=>x.className).filter(Boolean))][0]||'')||'';const id=state.students.reduce((m,x)=>Math.max(m,Number(x.id)||0),0)+1;const live=context==='live';const raw={'رقم التلميذ':code.trim(),'الاسم والنسب':name.trim(),'Classe':cls.trim()};const student={id,sourceRow:state.students.length+2,displayName:name.trim(),className:cls.trim(),sex:'',massarCode:code.trim(),raw,selected:live||context==='setup',result:null,status:live?'active':'unselected',position:state.direction===-1?100:0,rawHeaders:Object.keys(raw),motif:'',motifText:''};if(student.selected)student.selOrder=(state.selSeq=(state.selSeq||0)+1);state.students.push(student);if(live){renderTrack();$('liveParticipantCount').textContent=selectedStudents().length;$('totalLiveCount').textContent=selectedStudents().length;$('stoppedCount').textContent=state.students.filter(x=>x.selected&&x.result).length;if(state.paused&&$('liveStatusText').textContent==='TOUS ARRÊTÉS')togglePause();showToast(`${student.displayName} ajouté au test en cours.`);}else if(context==='results'){renderResults();showToast(`${student.displayName} ajouté à la liste : à tester.`);}else{renderStudents();showToast(`${student.displayName} ajouté à la liste.`);}saveSessionNow();return student;}
+function setSel(x,v){if(v&&!x.result){if(!x.selected){x.selected=true;x.selOrder=(state.selSeq=(state.selSeq||0)+1);}}else{x.selected=false;x.selOrder=0;}scheduleSave();}
+function selectedStudents(){return state.students.filter(s=>s.selected).sort((a,b)=>((a.selOrder||1e9)-(b.selOrder||1e9))||(a.id-b.id))}
+function laneBase(){return state.laneMode==='restart'?0:state.students.filter(x=>x.result&&!x.selected).length;}
+function refreshSelBadges(){
+ const base=laneBase(),sel=selectedStudents(),idx=new Map(sel.map((x,i)=>[x.id,i]));
+ document.querySelectorAll('[data-sel-no]').forEach(el=>{const k=idx.get(Number(el.dataset.selNo));el.textContent=k!=null?base+k+1:'';el.classList.toggle('on',k!=null);});
+ const done=state.students.filter(x=>x.result&&!x.selected).length;const row=$('laneModeRow');if(row){row.classList.toggle('hidden',!done);const o=$('laneMode').options[0];o.textContent=`Continuer la numérotation (${done+1}, ${done+2}…)`;}
+}
 function configure(){state.startSpeed=Number($('startSpeed').value)||8.5;state.speedIncrement=Number($('speedIncrement').value)||.5;state.levelDuration=Math.max(10,Number($('levelDuration').value)||60);state.shuttleLength=Math.max(10,Number($('shuttleLength').value)||20);state.level=1;state.speed=state.startSpeed;}
 // Pistes connues : même structure de bips (mesurée), seul le début change. La durée du fichier importé sert à la reconnaître.
-const TRACK_URL='https://fitdistance.io/assets/audio/luc-leger-20mn.mp3';
+const BUNDLED_AUDIO='audio/luc-leger-20mn.mp3';                         // fichier fourni avec le site (même adresse que la page)
+const REMOTE_AUDIO='https://fitdistance.io/assets/audio/luc-leger-20mn.mp3'; // secours si le fichier du site est absent
+async function readAudio(url,st,bar){
+ const resp=await fetch(url,{cache:'no-store'});if(!resp.ok)throw new Error('HTTP '+resp.status);
+ const total=Number(resp.headers.get('content-length'))||0;let parts=[],got=0;
+ if(resp.body&&resp.body.getReader){const rd=resp.body.getReader();for(;;){const {done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;const pct=total?Math.min(100,got/total*100):0;state.audioPct=Math.round(pct);bar.style.width=(total?pct:50)+'%';st.textContent=`Chargement de la bande-son… ${total?pct.toFixed(0)+' %':''} (${(got/1048576).toFixed(1)}${total?' / '+(total/1048576).toFixed(1):''} Mo)`;}}
+ else{const ab=await resp.arrayBuffer();parts=[ab];got=ab.byteLength;}
+ if(total&&got<total)throw new Error('téléchargement incomplet');if(got<1000000)throw new Error('fichier trop petit');
+ return new File(parts,'luc-leger-20mn.mp3',{type:'audio/mpeg'});
+}
 async function downloadTrack(){
  const btn=$('downloadTrackBtn'),wrap=$('dlWrap'),bar=$('dlBar'),st=$('audioFileStatus');
- if(!navigator.onLine&&!state.audioMode){st.textContent='Pas de connexion : impossible de télécharger maintenant. Fais-le une fois avec du réseau (la piste reste ensuite sur l’appareil), ou importe le MP3 à la main.';st.style.color='var(--red)';return;}
- btn.disabled=true;wrap.classList.remove('hidden');bar.style.width='0%';st.style.color='var(--blue)';st.textContent='Téléchargement de la bande-son… 0 %';
- try{
-  const resp=await fetch(TRACK_URL,{mode:'cors',cache:'no-store'});
-  if(!resp.ok)throw new Error('HTTP '+resp.status);
-  const total=Number(resp.headers.get('content-length'))||0;let parts=[],got=0;
-  if(resp.body&&resp.body.getReader){const rd=resp.body.getReader();for(;;){const {done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;const pct=total?Math.min(100,got/total*100):0;bar.style.width=(total?pct:50)+'%';st.textContent=`Téléchargement de la bande-son… ${total?pct.toFixed(0)+' %':''} (${(got/1048576).toFixed(1)}${total?' / '+(total/1048576).toFixed(1):''} Mo)`;}}
-  else{const ab=await resp.arrayBuffer();parts=[ab];got=ab.byteLength;}
-  if(total&&got<total)throw new Error('téléchargement incomplet');
-  if(got<1000000)throw new Error('fichier trop petit');
-  bar.style.width='100%';
-  const file=new File(parts,'luc-leger-20mn.mp3',{type:'audio/mpeg'});
-  loadReferenceAudio(file);
- }catch(e){
-  wrap.classList.add('hidden');
-  st.style.color='var(--red)';
-  st.textContent=(e&&e.name==='TypeError')?'Téléchargement automatique impossible (réseau coupé ou site qui refuse l’accès depuis cette page). Utilise « Importer le MP3 à la main » ci-dessous.':'Téléchargement interrompu ('+(e&&e.message||'erreur')+'). Réessaie, ou importe le MP3 à la main.';
-  showToast('Téléchargement impossible : importe le MP3 à la main.');
-  const d=document.querySelector('.audio-panel details');if(d)d.open=true;
- }finally{btn.disabled=false;}
+ if(state.audioLoading)return;
+ state.audioLoading=true;state.audioPct=0;btn.disabled=true;wrap.classList.remove('hidden');bar.style.width='0%';st.style.color='var(--blue)';st.textContent='Chargement de la bande-son…';
+ let ok=false,lastErr=null;
+ for(const url of [BUNDLED_AUDIO,REMOTE_AUDIO]){
+  try{const file=await readAudio(url,st,bar);bar.style.width='100%';loadReferenceAudio(file);ok=true;break;}catch(e){lastErr=e;}
+ }
+ state.audioLoading=false;btn.disabled=false;
+ if(ok)return;
+ wrap.classList.add('hidden');
+ if(location.protocol==='file:'){ // page ouverte depuis un dossier de l'ordinateur : lecture directe du fichier voisin, sans réseau
+  const a=$('referenceAudio');state.audioMode=true;setAudioProfileInputs(true);state.referenceAudio=a;state.localSrc=true;a.preload='auto';a.src=BUNDLED_AUDIO;a.load();a.classList.remove('hidden');st.style.color='var(--blue)';st.textContent='Lecture directe du fichier du dossier…';return;
+ }
+ st.style.color='var(--red)';
+ st.textContent='La bande-son n’a pas pu être chargée ('+(lastErr&&lastErr.message||'erreur')+'). Vérifie la connexion puis clique sur « Recharger la bande-son », ou importe le MP3 à la main ci-dessous.';
+ showToast('Bande-son non chargée : réessaie ou importe le MP3.');
+ const d=document.querySelector('.audio-panel details');if(d)d.open=true;
 }
-function trackReady(){const a=$('referenceAudio');return !!(state.audioMode&&state.referenceAudio===a&&a.src&&a.src.startsWith('blob:'));} // source locale (blob) = données déjà entièrement dans l'appareil : aucun réseau nécessaire
+function trackReady(){const a=$('referenceAudio');return !!(state.audioMode&&state.referenceAudio===a&&a.src&&(a.src.startsWith('blob:')||(state.localSrc&&location.protocol==='file:')));} // blob = données déjà entièrement dans l'appareil : aucun réseau nécessaire
 const KNOWN_AUDIO=[
  {name:'luc-leger-20mn.mp3 (fitdistance.io) — test-luc-leger-navette-vma',duration:1226.76,firstBeep:8.41},
  {name:'Test Luc Léger – Audio officiel avec paliers (20 min)',duration:1210.23,firstBeep:7.39}
@@ -424,11 +659,16 @@ function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open(TRACK_D
 async function trackSave(file){try{const db=await idb();await new Promise((res,rej)=>{const tx=db.transaction(TRACK_DB.store,'readwrite');tx.objectStore(TRACK_DB.store).put({blob:file,name:file.name,size:file.size,saved:Date.now()},TRACK_DB.key);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();$('forgetTrackBtn').classList.remove('hidden');return true;}catch(e){return false;}}
 async function trackLoad(){try{const db=await idb();return await new Promise((res)=>{const q=db.transaction(TRACK_DB.store).objectStore(TRACK_DB.store).get(TRACK_DB.key);q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null);});}catch(e){return null;}}
 async function trackForget(){try{const db=await idb();await new Promise(res=>{const tx=db.transaction(TRACK_DB.store,'readwrite');tx.objectStore(TRACK_DB.store).delete(TRACK_DB.key);tx.oncomplete=res;tx.onerror=res;});}catch(e){}$('forgetTrackBtn').classList.add('hidden');clearReferenceAudio();showToast('Piste supprimée de cet appareil.');}
-async function initSavedTrack(){const t=await trackLoad();if(!t||!t.blob)return;$('forgetTrackBtn').classList.remove('hidden');const f=new File([t.blob],t.name||'luc-leger.mp3',{type:t.blob.type||'audio/mpeg'});loadReferenceAudio(f,true);}
+async function initSavedTrack(){const t=await trackLoad();if(!t||!t.blob)return false;$('forgetTrackBtn').classList.remove('hidden');const f=new File([t.blob],t.name||'luc-leger.mp3',{type:t.blob.type||'audio/mpeg'});loadReferenceAudio(f,true);return true;}
 async function keepAwake(){try{if('wakeLock' in navigator){state.wakeLock=await navigator.wakeLock.request('screen');}}catch(e){}}
 function releaseAwake(){try{if(state.wakeLock){state.wakeLock.release();state.wakeLock=null;}}catch(e){}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&state.started&&!state.wakeLock)keepAwake();});
-function loadReferenceAudio(file,fromStore){
+function setAudioProfileInputs(enabled){
+ const start=$('startSpeed'),inc=$('speedIncrement');
+ if(enabled){start.value='8.5';inc.value='0.5';start.disabled=true;inc.disabled=true;}
+ else{start.disabled=false;inc.disabled=false;}
+}
+function loadReferenceAudio(file,fromStore){state.localSrc=false;
  if(!file)return;
  if(!String(file.type||'').startsWith('audio/')&&!/\.(mp3|wav|m4a|ogg|aac|flac)$/i.test(file.name)){showToast('Choisis un fichier audio MP3, WAV, M4A ou OGG.');return;}
  if(state.audioObjectURL)URL.revokeObjectURL(state.audioObjectURL);
@@ -528,7 +768,7 @@ function startReferenceAudio(){keepAwake();
 }
 
 function setView(name){document.documentElement.dataset.view=name;['setupView','liveView','resultsView'].forEach(id=>$(id).classList.add('hidden'));$(name+'View').classList.remove('hidden');['step1','step2','step3'].forEach(id=>$(id).classList.remove('active'));if(name==='setup')$('step1').classList.add('active');if(name==='live')$('step2').classList.add('active');if(name==='results')$('step3').classList.add('active');state.stage=name;window.scrollTo({top:0,behavior:'smooth'})}
-function startPreparation(){const crew=selectedStudents();if(!crew.length)return;if(state.audioMode&&!trackReady()){showToast('La bande-son n’est pas encore entièrement chargée dans l’appareil : attends le message vert « en mémoire » avant de lancer.');return;}if(!state.audioMode&&!confirm('Aucune bande-son officielle chargée : le test utilisera des bips générés par la page (non officiels).\n\nPour la vraie piste Luc Léger, annule puis clique sur « Télécharger la bande-son dans l’appareil ».\n\nContinuer quand même ?'))return;configure();if(state.audioMode&&state.shuttleLength!==20){showToast('La bande-son standard est prévue pour 20 m. Modifie la distance ou retire la bande-son.');return;}state.students.forEach(s=>{if(s.selected){s.result=null;s.status='active';s.motif='';s.motifText='';}else if(!s.result){s.status='unselected';}s.position=0});state.stopHistory=[];state.started=false;state.paused=false;state.sound=true;state.shuttlesTotal=0;state.shuttlesInLevel=0;state.eventLevel=1;state.direction=1;state.sessionStart=0;state.audioTimeline=[];state.audioTimelineDuration=0;$('pauseBtn').textContent='Ⅱ Pause';$('soundBtn').textContent='🔊 Son : oui';$('soundLabel').textContent='activés';$('liveParticipantCount').textContent=crew.length;$('totalLiveCount').textContent=crew.length;$('stoppedCount').textContent='0';$('trackDistance').textContent=state.shuttleLength;renderTrack();$('nextGroupLiveBtn').classList.toggle('hidden',!state.students.some(x=>canAuto(x)&&!x.selected));$('groupLabel').textContent=(state.group||1)>1?' · groupe '+state.group:'';setView('live');$('liveStatusText').textContent='PRÊT';$('elapsedTime').textContent='00:00';$('currentLevel').textContent='01';$('currentSpeed').textContent=state.startSpeed.toFixed(1);$('levelProgress').style.width='0%';$('audioClockNote').classList.toggle('hidden',!state.audioMode);if(state.audioMode){startReferenceAudio();}else{beginCountdown();}}
+function startPreparation(){const crew=selectedStudents().filter(s=>!s.result);if(!crew.length)return;if(state.audioMode&&!trackReady()){showToast('La bande-son n’est pas encore entièrement chargée dans l’appareil : attends le message vert « en mémoire » avant de lancer.');return;}if(state.audioLoading){showToast('La bande-son est en cours de chargement : attends « Prête » dans le tableau de bord.');return;}if(!state.audioMode&&!confirm('Aucune bande-son officielle chargée : le test utilisera des bips générés par la page (non officiels).\n\nPour la vraie piste Luc Léger, annule puis clique sur « Recharger la bande-son ».\n\nContinuer quand même ?'))return;configure();if(state.audioMode&&state.shuttleLength!==20){showToast('La bande-son standard est prévue pour 20 m. Modifie la distance ou retire la bande-son.');return;}state.students.forEach(s=>{if(s.selected&&!s.result){s.status='active';s.motif='';s.motifText='';}else if(s.result){s.selected=false;s.selOrder=0;}else{s.status='unselected';}s.position=state.direction===-1?100:0;});state.lastProtocol=state.audioMode?'audio':'synthetic';state.numbering=$('palierNumbering')?$('palierNumbering').value:'voice';state.stopHistory=[];state.started=false;state.paused=false;state.sound=true;state.shuttlesTotal=0;state.shuttlesInLevel=0;state.eventLevel=1;state.direction=1;state.sessionStart=0;state.audioTimeline=[];state.audioTimelineDuration=0;$('pauseBtn').textContent='Ⅱ Pause';$('soundBtn').textContent='🔊 Son : oui';$('soundLabel').textContent='activés';$('liveParticipantCount').textContent=crew.length;$('totalLiveCount').textContent=crew.length;$('stoppedCount').textContent='0';$('trackDistance').textContent=state.shuttleLength;renderTrack();$('nextGroupLiveBtn').classList.toggle('hidden',!state.students.some(x=>canAuto(x)&&!x.selected));$('groupLabel').textContent=(state.group||1)>1?' · groupe '+state.group:'';setView('live');$('liveStatusText').textContent='PRÊT';$('elapsedTime').textContent='00:00';$('currentLevel').textContent='01';$('currentSpeed').textContent=state.startSpeed.toFixed(1);$('levelProgress').style.width='0%';$('audioClockNote').classList.toggle('hidden',!state.audioMode);saveSessionNow();if(state.audioMode){startReferenceAudio();}else{beginCountdown();}}
 function beginCountdown(){const layer=$('countdown');layer.classList.remove('hidden');let n=3;$('countdownNumber').textContent=n;const tick=()=>{n--;if(n<=0){layer.classList.add('hidden');startTestClock();return;}$('countdownNumber').textContent=n;state.countdownTimer=setTimeout(tick,1000)};state.countdownTimer=setTimeout(tick,1000)}
 function getLevelAt(seconds){return Math.max(1,Math.floor(Math.max(0,seconds)/state.levelDuration)+1)}
 function speedAt(level){return state.startSpeed+(level-1)*state.speedIncrement}
@@ -557,46 +797,60 @@ function updateReferenceFrame(){
 }
 function loop(){cancelAnimationFrame(state.raf);const frame=()=>{if(!state.started)return;if(!state.paused){if(state.audioMode&&state.referenceAudio)updateReferenceFrame();else updateSyntheticFrame();}state.raf=requestAnimationFrame(frame)};state.raf=requestAnimationFrame(frame)}
 function formatTime(seconds){const n=Math.max(0,Math.floor(seconds));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
-function renderTrack(){const crew=selectedStudents();crew.forEach((s,i)=>{s.lane=i+1;});$('trackBoard').innerHTML=crew.map(s=>`<div class="player-row" data-player-row="${s.id}"><button type="button" dir="auto" class="player-name name-btn" data-stop-name="${s.id}" aria-label="Enregistrer l’arrêt de ${escapeHTML(s.displayName)}" title="Toucher le nom pour enregistrer l’arrêt"><strong dir="auto" title="${escapeHTML(s.displayName)}">${escapeHTML(s.displayName)}</strong><span>${escapeHTML(s.className||'Classe non renseignée')}</span></button><div class="lane-no" title="Couloir ${s.lane}" aria-label="Couloir ${s.lane}">${s.lane}</div><div class="track-lane"><div class="end-line left"></div><div class="end-line right"></div><span class="cone left">▲</span><span class="cone right">▲</span><button type="button" class="runner" data-runner="${s.id}" style="left:${s.position||0}%" aria-label="Enregistrer l’arrêt de ${escapeHTML(s.displayName)}" title="Toucher pour enregistrer l’arrêt">🏃</button></div><div class="player-result" data-runner-result="${s.id}">${lvlTag(numDisplay(0))} · 0</div></div>`).join('');$('trackBoard').querySelectorAll('[data-runner]').forEach(btn=>btn.addEventListener('click',()=>recordStop(Number(btn.dataset.runner))));$('trackBoard').querySelectorAll('[data-stop-name]').forEach(btn=>btn.addEventListener('click',()=>recordStop(Number(btn.dataset.stopName))));}
+function renderTrack(){const crew=selectedStudents();const lb=laneBase();crew.forEach((s,i)=>{s.lane=lb+i+1;});$('trackBoard').innerHTML=crew.map(s=>{const stopped=!!s.result;return `<div class="player-row ${stopped?'is-stopped':''}" data-player-row="${s.id}" style="${stopped?'opacity:.82':''}"><button type="button" dir="auto" class="player-name name-btn" data-stop-name="${s.id}" aria-label="${stopped?'Annuler l’arrêt de':'Enregistrer l’arrêt de'} ${escapeHTML(s.displayName)}" title="${stopped?'Toucher pour annuler l’arrêt':'Toucher le nom pour enregistrer l’arrêt'}"><strong dir="auto" title="${escapeHTML(s.displayName)}">${escapeHTML(s.displayName)}</strong><span>${stopped?`Arrêt à ${escapeHTML(s.result.time||'—')} · toucher pour annuler`:escapeHTML(s.className||'Classe non renseignée')}</span></button><div class="lane-no" title="Couloir ${s.lane}" aria-label="Couloir ${s.lane}">${s.lane}</div><div class="track-lane"><div class="end-line left"></div><div class="end-line right"></div><span class="cone left">▲</span><span class="cone right">▲</span><button type="button" class="runner ${stopped?'stopped':''}" data-runner="${s.id}" ${stopped?'disabled':''} style="left:${Number(s.position)||0}%" aria-label="${stopped?'Arrêt enregistré':'Enregistrer l’arrêt de '+escapeHTML(s.displayName)}" title="${stopped?'Arrêt enregistré':'Toucher pour enregistrer l’arrêt'}">🏃</button></div><div class="player-result ${stopped?'stopped-label':''}" data-runner-result="${s.id}">${stopped?`${lvlTag(s.result.level)} ✓`:`${lvlTag(numDisplay(0))} · 0`}</div></div>`;}).join('');$('trackBoard').querySelectorAll('[data-runner]').forEach(btn=>btn.addEventListener('click',()=>recordStop(Number(btn.dataset.runner))));$('trackBoard').querySelectorAll('[data-stop-name]').forEach(btn=>btn.addEventListener('click',()=>handleNameTap(Number(btn.dataset.stopName))));}
 function currentMetrics(){if(state.audioMode&&state.referenceAudio){const snap=getAudioSnapshot();return {level:snap.level,speed:snap.speed,levelShuttles:snap.levelShuttles,totalShuttles:snap.totalShuttles,time:snap.time,elapsed:snap.elapsed,quarter:snap.quarter,vma:snap.vma};}const now=state.paused&&state.pauseAt?state.pauseAt:performance.now(),elapsed=state.sessionStart?Math.max(0,(now-state.sessionStart)/1000):0;const level=getLevelAt(elapsed);const levelShuttles=level===state.eventLevel?state.shuttlesInLevel:0;const q=Math.max(0,Math.min(3,Math.floor((elapsed-(level-1)*state.levelDuration)/(state.levelDuration/4))));return {level,speed:speedAt(level),levelShuttles,totalShuttles:state.shuttlesTotal,time:formatTime(elapsed),elapsed,quarter:q,vma:speedAt(level)-state.speedIncrement+state.speedIncrement/4*q};}
-function recordStop(id,source='Arrêt individuel'){const s=state.students.find(x=>x.id===id);if(!s||!s.selected||s.result||!state.started)return;if(state.audioMode&&state.referenceAudio&&state.referenceAudio.currentTime<state.audioStartOffset){showToast('Le test n’a pas encore commencé selon la synchronisation audio.');return;}const m=currentMetrics();state.stopHistory.push(id);s.result={...m,source};s.status='stopped';const btn=document.querySelector(`[data-runner="${id}"]`);if(btn){btn.classList.add('stopped');btn.disabled=true;btn.style.left=(s.position||0)+'%';btn.setAttribute('aria-label',`${s.displayName}, arrêt enregistré (${lvlText(m.level)})`);}const res=document.querySelector(`[data-runner-result="${id}"]`);if(res){res.textContent=`${lvlTag(m.level)} ✓`;res.classList.add('stopped-label');}const row=document.querySelector(`[data-player-row="${id}"]`);if(row){row.classList.add('is-stopped');row.querySelector('.player-name span').textContent=`Arrêt à ${m.time}`;row.style.opacity='.82';const nb=row.querySelector('[data-stop-name]');if(nb)nb.disabled=true;}const stopped=state.students.filter(x=>x.selected&&x.result).length;$('stoppedCount').textContent=stopped;$('undoBtn').disabled=false;showToast(`Couloir ${s.lane||'?'} · ${s.displayName} : ${lvlText(m.level)}, ${QUARTER_TEXT[m.quarter]||''} · VMA ${vmaText(m)} km/h`);if(stopped===selectedStudents().length){state.paused=true;state.pauseAt=performance.now();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();$('pauseBtn').textContent='▶ Reprendre';$('liveStatusText').textContent='TOUS ARRÊTÉS';showToast('Tous les participants ont été enregistrés. Termine la séance pour exporter.');}}
-function undoStop(){const id=state.stopHistory.pop();if(!id){$('undoBtn').disabled=true;return;}const s=state.students.find(x=>x.id===id);if(s){s.result=null;s.status='active';s.position=state.direction===1?0:100;const row=document.querySelector(`[data-player-row="${id}"]`);if(row){row.classList.remove('is-stopped');row.style.opacity='1';row.querySelector('.player-name span').textContent=s.className||'Classe non renseignée';const nb=row.querySelector('[data-stop-name]');if(nb)nb.disabled=false;const runner=row.querySelector('[data-runner]');runner.disabled=false;runner.classList.remove('stopped');runner.style.left=s.position+'%';runner.setAttribute('aria-label',`Enregistrer l’arrêt de ${s.displayName}`);const res=row.querySelector('[data-runner-result]');res.textContent=`${lvlTag(state.level)} · ${state.shuttlesInLevel}`;res.classList.remove('stopped-label');}showToast('Dernier arrêt annulé.');}$('stoppedCount').textContent=state.students.filter(x=>x.selected&&x.result).length;$('liveStatusText').textContent=state.paused?'EN PAUSE':'EN COURS';$('undoBtn').disabled=state.stopHistory.length===0;}
+function recordStop(id,source='Arrêt individuel'){const s=state.students.find(x=>x.id===id);if(!s||!s.selected||s.result||!state.started)return;if(state.audioMode&&state.referenceAudio&&state.referenceAudio.currentTime<state.audioStartOffset){showToast('Le test n’a pas encore commencé selon la synchronisation audio.');return;}const m=currentMetrics();state.stopHistory.push(id);s.result={...m,source};s.status='stopped';const btn=document.querySelector(`[data-runner="${id}"]`);if(btn){btn.classList.add('stopped');btn.disabled=true;btn.style.left=(s.position||0)+'%';btn.setAttribute('aria-label',`${s.displayName}, arrêt enregistré (${lvlText(m.level)})`);}const res=document.querySelector(`[data-runner-result="${id}"]`);if(res){res.textContent=`${lvlTag(m.level)} ✓`;res.classList.add('stopped-label');}const row=document.querySelector(`[data-player-row="${id}"]`);if(row){row.classList.add('is-stopped');row.querySelector('.player-name span').textContent=`Arrêt à ${m.time}`;row.style.opacity='.82';row.querySelector('.player-name span').textContent=`Arrêt à ${m.time} · toucher pour annuler`;}const stopped=state.students.filter(x=>x.selected&&x.result).length;$('stoppedCount').textContent=stopped;$('undoBtn').disabled=false;showToast(`Couloir ${s.lane||'?'} · ${s.displayName} : ${lvlText(m.level)}, ${QUARTER_TEXT[m.quarter]||''} · VMA ${vmaText(m)} km/h`,{label:'↩ Annuler',fn:()=>restoreStudent(id,false)});if(stopped===selectedStudents().length){state.paused=true;state.pauseAt=performance.now();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();$('pauseBtn').textContent='▶ Reprendre';$('liveStatusText').textContent='TOUS ARRÊTÉS';showToast('Tous les participants ont été enregistrés.');}saveSessionNow();}
+function restoreStudent(id,ask=true){
+ const s=state.students.find(x=>x.id===id);if(!s||!s.selected||!s.result||!state.started)return;
+ if(ask&&!confirm(`Remettre ${s.displayName} (couloir ${s.lane}) en course ?\nSon arrêt (${lvlText(s.result.level)}) sera annulé.`))return;
+ s.result=null;s.status='active';state.stopHistory=state.stopHistory.filter(x=>x!==id);
+ const row=document.querySelector(`[data-player-row="${id}"]`);
+ if(row){row.classList.remove('is-stopped');row.style.opacity='1';row.querySelector('.player-name span').textContent=s.className||'Classe non renseignée';const nb=row.querySelector('[data-stop-name]');if(nb)nb.disabled=false;const rn=row.querySelector('[data-runner]');if(rn){rn.disabled=false;rn.classList.remove('stopped');rn.setAttribute('aria-label',`Enregistrer l’arrêt de ${s.displayName}`);}const rs=row.querySelector('[data-runner-result]');if(rs)rs.classList.remove('stopped-label');}
+ $('stoppedCount').textContent=state.students.filter(x=>x.selected&&x.result).length;$('undoBtn').disabled=state.stopHistory.length===0;
+ if(state.paused&&$('liveStatusText').textContent==='TOUS ARRÊTÉS')togglePause();
+ showToast(`${s.displayName} remis en course.`);saveSessionNow();
+}
+function handleNameTap(id){const s=state.students.find(x=>x.id===id);if(!s)return;if(s.result&&s.selected)restoreStudent(id);else recordStop(id);}
+function undoStop(){const id=state.stopHistory.pop();if(!id){$('undoBtn').disabled=true;return;}const s=state.students.find(x=>x.id===id);if(s){s.result=null;s.status='active';s.position=state.direction===1?0:100;const row=document.querySelector(`[data-player-row="${id}"]`);if(row){row.classList.remove('is-stopped');row.style.opacity='1';row.querySelector('.player-name span').textContent=s.className||'Classe non renseignée';const nb=row.querySelector('[data-stop-name]');if(nb)nb.disabled=false;const runner=row.querySelector('[data-runner]');runner.disabled=false;runner.classList.remove('stopped');runner.style.left=s.position+'%';runner.setAttribute('aria-label',`Enregistrer l’arrêt de ${s.displayName}`);const res=row.querySelector('[data-runner-result]');res.textContent=`${lvlTag(state.level)} · ${state.shuttlesInLevel}`;res.classList.remove('stopped-label');}showToast('Dernier arrêt annulé.');}$('stoppedCount').textContent=state.students.filter(x=>x.selected&&x.result).length;$('liveStatusText').textContent=state.paused?'EN PAUSE':'EN COURS';$('undoBtn').disabled=state.stopHistory.length===0;saveSessionNow();}
+function restartTest(){
+ if(!state.started)return;
+ const stopped=selectedStudents().filter(x=>x.result).length;
+ if(!confirm('Redémarrer le test depuis le début ?'+(stopped?`\n\nLes ${stopped} arrêt(s) déjà enregistrés seront effacés.`:'')+'\n\nLe décompte 3-2-1 puis la bande-son repartiront de zéro.'))return;
+ try{if(state.audioMode&&state.referenceAudio){state.referenceAudio.pause();state.referenceAudio.currentTime=0;}}catch(e){}
+ cancelAnimationFrame(state.raf);clearTimeout(state.countdownTimer);$('countdown').classList.add('hidden');releaseAwake();
+ state.started=false;state.paused=false;
+ selectedStudents().forEach(x=>{x.result=null;x.status='active';});
+ startPreparation();
+}
 function togglePause(){if(!state.started)return;if(!state.paused){state.paused=true;state.pauseAt=performance.now();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();$('pauseBtn').textContent='▶ Reprendre';$('liveStatusText').textContent='EN PAUSE';}else{if(state.audioMode&&state.referenceAudio){if(state.referenceAudio.ended){showToast('La bande-son est terminée. Termine la séance ou recommence-la.');return;}state.referenceAudio.play().catch(()=>showToast('Impossible de reprendre la bande-son.'));}else{const shift=performance.now()-state.pauseAt;state.sessionStart+=shift;state.lastBeepAt+=shift;state.nextBeepAt+=shift;}state.paused=false;$('pauseBtn').textContent='Ⅱ Pause';$('liveStatusText').textContent=state.audioMode?'SON SYNCHRONISÉ':'EN COURS';}}
 function toggleSound(){state.sound=!state.sound;$('soundBtn').textContent=state.sound?'🔊 Son : oui':'🔇 Son : non';$('soundLabel').textContent=state.sound?'activés':'coupés';if(state.audioMode&&state.referenceAudio){state.referenceAudio.muted=!state.sound;}else if(state.sound&&state.started&&!state.paused)beep()}
 function openMotifModal(onDone,onBack,onNext){
- const list=state.students.filter(s=>!isPart(s));if(!list.length){onDone();return;}
+ const list=state.students.filter(s=>!s.result);if(!list.length){onDone();return;}
  const bd=$('motifBackdrop'),box=$('motifList');
  const draw=()=>{box.innerHTML=list.map(s=>`<div class="motif-row" data-mrow="${s.id}"><div class="motif-name" dir="auto">${escapeHTML(s.displayName)}</div><div class="chips">${[['Absent','Absent'],['Malade','Malade'],['Dispensé','Dispensé'],['Autre','Autre'],['later','Plus tard']].map(([v,l])=>`<button type="button" class="chip ${s.motif===v?'on':''}" data-id="${s.id}" data-motif="${v}">${l}</button>`).join('')}</div>${s.motif==='Autre'?`<input class="motif-other" data-other="${s.id}" placeholder="Précise le motif (ex. blessé, exclu, en sortie…)" value="${escapeHTML(s.motifText||'')}">`:''}</div>`).join('');
-  const miss=list.filter(s=>!s.motif).length;$('motifMissing').textContent=miss?`${miss} élève(s) sans motif`:'Tous les motifs sont renseignés ✓';};
+  const miss=list.filter(s=>!s.motif).length;$('motifMissing').textContent=miss?`${miss} élève(s) resteront « À tester »`:'Tous les motifs sont renseignés ✓';};
  box.onclick=ev=>{const b=ev.target.closest('.chip');if(!b)return;const s=list.find(x=>x.id===Number(b.dataset.id));if(!s)return;s.motif=s.motif===b.dataset.motif?'':b.dataset.motif;if(s.motif!=='Autre')s.motifText='';draw();};
  box.oninput=ev=>{const i=ev.target.closest('[data-other]');if(!i)return;const s=list.find(x=>x.id===Number(i.dataset.other));if(s)s.motifText=i.value;};
  bd.querySelectorAll('[data-bulk]').forEach(b=>b.onclick=()=>{list.forEach(s=>{if(!s.motif)s.motif=b.dataset.bulk;});draw();});
- $('motifOkBtn').onclick=()=>{const miss=list.filter(s=>!s.motif).length;if(miss&&!confirm(`${miss} élève(s) n’ont pas de motif : ils seront inscrits « Non précisé ». Continuer ?`))return;bd.classList.add('hidden');onDone();};
+ $('motifOkBtn').onclick=()=>{bd.classList.add('hidden');saveSessionNow();onDone();};
  $('motifBackBtn').onclick=()=>{bd.classList.add('hidden');onBack();};$('motifNextBtn').classList.toggle('hidden',!onNext);$('motifNextBtn').onclick=()=>{bd.classList.add('hidden');if(onNext)onNext();};
  draw();bd.classList.remove('hidden');
 }
-function finishSession(){if(!state.started){return;}const remaining=selectedStudents().filter(s=>!s.result).length;if(remaining&&!confirm(`${remaining} élève(s) n’ont pas encore été arrêtés individuellement. En clôturant, leur palier affiché sera enregistré comme « Séance clôturée », et non comme un arrêt individuel. Continuer ?`))return;
- const m=currentMetrics();const autoPaused=!state.paused;if(autoPaused)togglePause();
- const finalize=()=>{releaseAwake();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();state.started=false;state.paused=false;cancelAnimationFrame(state.raf);clearTimeout(state.countdownTimer);$('countdown').classList.add('hidden');selectedStudents().filter(s=>!s.result).forEach(s=>{s.result={...m,source:'Séance clôturée'};s.status='closed';});renderResults();setView('results');};
- openMotifModal(finalize,()=>{if(autoPaused&&state.paused)togglePause();},()=>{closeRun(m);goNextGroup();});}
+function finishSession(){if(!state.started){return;}const remaining=selectedStudents().filter(s=>!s.result).length;if(remaining&&!confirm(`${remaining} élève(s) n’ont pas encore de résultat individuel. Ils resteront « À tester » : aucune VMA ne leur sera attribuée. Enregistrer le bilan de cette séance ?`))return;
+ const autoPaused=!state.paused;if(autoPaused)togglePause();
+ const finalize=()=>{releaseAwake();if(state.audioMode&&state.referenceAudio)state.referenceAudio.pause();state.started=false;state.paused=false;cancelAnimationFrame(state.raf);clearTimeout(state.countdownTimer);$('countdown').classList.add('hidden');selectedStudents().filter(s=>!s.result).forEach(s=>{s.selected=false;s.selOrder=0;s.status='unselected';});renderResults();setView('results');saveSessionNow();};
+ openMotifModal(finalize,()=>{if(autoPaused&&state.paused)togglePause();},()=>{stopLiveAndKeepPending();goNextGroup();});}
 function isPart(s){return !!(s.selected||s.result);}
-function motifClass(m){return {Absent:'absent',Malade:'malade','Dispensé':'dispense',Autre:'autre',later:'later'}[m]||'nonprecise';}
-function motifLabel(s){const m=s.motif;if(m==='later')return 'À tester (non passé)';if(m==='Autre')return 'Autre'+(s.motifText?' : '+s.motifText:'');return m||'Non précisé';}
+function motifClass(m){return {Absent:'absent',Malade:'malade','Dispensé':'dispense',Autre:'autre',later:'later'}[m]||'later';}
+function motifLabel(s){const m=s.motif;if(m==='later')return 'À tester (non passé)';if(m==='Autre')return 'Autre'+(s.motifText?' : '+s.motifText:'');return m||'À tester';}
 function resultRows(){return state.students.map((s,i)=>({student:s,index:i+1,selected:isPart(s),result:s.result,source:s.result?.source||''}));}
-function renderResults(){$('nextGroupBtn').classList.toggle('hidden',!state.students.some(canAuto));const rows=resultRows();const selected=rows.filter(x=>x.selected);const stopped=selected.filter(x=>x.result&&x.result.source==='Arrêt individuel').length;$('kpiAll').textContent=state.students.length;$('kpiSelected').textContent=selected.length;$('kpiStopped').textContent=stopped;$('resultSubtitle').textContent=`${state.filename||'Liste importée'} · résultats dans l’ordre original du fichier.`;
+function renderResults(){$('nextGroupBtn').classList.toggle('hidden',!state.students.some(canAuto));$('exportMassarBtn').disabled=!state.students.length;const rows=resultRows();const selected=rows.filter(x=>x.selected);const stopped=selected.filter(x=>x.result&&x.result.source==='Arrêt individuel').length;$('kpiAll').textContent=state.students.length;$('kpiSelected').textContent=selected.length;$('kpiStopped').textContent=stopped;$('resultSubtitle').textContent=`${state.filename||'Liste importée'} · résultats dans l’ordre original du fichier.`;
  $('resultTableBody').innerHTML=rows.map(({student:s,index,selected:sel,result:r})=>{
-  if(!sel)return `<tr class="np-row ${motifClass(s.motif)}"><td>${index}</td><td dir="auto">${escapeHTML(s.displayName)}</td><td>${escapeHTML(s.className)}</td><td colspan="10"><span class="np-tag">${escapeHTML(motifLabel(s))}</span></td></tr>`;
-  const status=!r?'Non évalué':r.source==='Arrêt individuel'?'Arrêt enregistré':'Séance clôturée';const tag=!r?'pending':r.source==='Arrêt individuel'?'done':'pending';
-  return `<tr><td>${index}</td><td dir="auto">${escapeHTML(s.displayName)}</td><td>${escapeHTML(s.className)}</td><td>${s.lane||'—'}</td><td>Oui</td><td>${r?lvlNum(r.level):'—'}</td><td>${r?r.levelShuttles:'—'}</td><td>${r?r.speed.toFixed(1):'—'}</td><td>${r?quarterLabel(r):'—'}</td><td><b>${r?vmaText(r):'—'}</b></td><td>${r?r.totalShuttles:'—'}</td><td>${r?r.time:'—'}</td><td><span class="status-tag ${tag}">${status}</span></td></tr>`}).join('')}
-function buildExportRows(){return state.students.map(s=>{const out={...s.raw};const r=s.result;const part=isPart(s);Object.assign(out,{'Couloir':part&&s.lane?s.lane:'','Participant sélectionné':part?'Oui':'Non','Statut du test':!part?'Non participant':!r?'Non évalué':r.source==='Arrêt individuel'?'Arrêt enregistré':'Séance clôturée','Motif de non-participation':!part?motifLabel(s):'','Palier enregistré':r?(r.level>=1?r.level:'Échauffement'):'','Navettes du palier':r?r.levelShuttles:'','Vitesse du palier (km/h)':r?Number(r.speed.toFixed(1)):'','Repère de palier (voix)':r?quarterLabel(r):'','VMA affinée (km/h)':r&&r.vma!=null?Number(Number(r.vma).toFixed(3)):'','Navettes cumulées':r?r.totalShuttles:'','Temps (mm:ss)':r?r.time:'','Observation':r?r.source:''});return out;})}
-function exportCSV(){
- const rows=buildExportRows();if(!rows.length){showToast('Aucun résultat à exporter.');return;}
- const heads=Object.keys(rows[0]);const esc=v=>{v=v==null?'':String(v);return /[";\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
- const csv='\uFEFF'+[heads.map(esc).join(';')].concat(rows.map(r=>heads.map(h=>esc(r[h])).join(';'))).join('\r\n');
- const base=(state.filename||'classe').replace(/\.[^.]+$/,'').replace(/[^a-z0-9_-]+/gi,'_');
- const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=`Resultats_Luc_Leger_${base}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
- showToast('Hors ligne : export CSV (s’ouvre dans Excel).');
-}
+  if(!sel)return `<tr class="np-row ${motifClass(s.motif)}"><td>${index}</td><td dir="auto">${escapeHTML(s.displayName)}</td><td>${escapeHTML(s.className)}</td><td colspan="11"><span class="np-tag">${escapeHTML(motifLabel(s))}</span></td></tr>`;
+  const status=!r?'Non évalué':r.importedVma?(r.mappingUnavailable?'VMA à vérifier':'VMA déjà présente'):(r.source==='Arrêt individuel'?'Arrêt enregistré':'Séance clôturée');const tag=!r?'pending':'done';
+  return `<tr><td>${index}</td><td dir="auto">${escapeHTML(s.displayName)}</td><td>${escapeHTML(s.className)}</td><td>${s.lane||'—'}</td><td>Oui</td><td>${r?lvlNum(r.level):'—'}</td><td>${r?r.levelShuttles:'—'}</td><td>${r?r.speed.toFixed(1):'—'}</td><td>${r?quarterLabel(r):'—'}</td><td><b>${r?vmaText(r):'—'}</b></td><td>${r?r.totalShuttles:'—'}</td><td>${r?r.time:'—'}</td><td><span class="status-tag ${tag}">${status}</span></td><td>${r?`<button type="button" class="btn btn-ghost btn-small result-edit-vma" data-edit-vma="${s.id}">Modifier VMA</button>`:'—'}</td></tr>`}).join('');$('resultTableBody').querySelectorAll('[data-edit-vma]').forEach(b=>b.addEventListener('click',()=>editStudentVma(b.dataset.editVma)));}
+function nearestVmaMapping(value){let best=null;const protocol=state.lastProtocol||'audio';if(protocol==='audio'){for(let k=0;k<=20;k++){for(let q=0;q<=3;q++){if(k===0&&q>0)continue;const v=8+0.5*k+0.125*q;const d=Math.abs(value-v);if(!best||d<best.diff){const markIndex=k>0?4*(k-1)+q:0;const elapsed=k===0?0:(VOICE_MARKS[markIndex]??VOICE_MARKS[VOICE_MARKS.length-1]);const total=lapsDoneAt(elapsed);const base=lapsDoneAt(k>0?VOICE_MARKS[4*(k-1)]:0);best={diff:d,vma:v,level:state.numbering==='first'?k+1:k,k,quarter:q,speed:8.5+0.5*k,elapsed,time:formatTime(elapsed),totalShuttles:total,levelShuttles:Math.max(0,total-base)};}}}}else{for(let level=1;level<=40;level++){for(let q=0;q<=3;q++){const v=speedAt(level)-state.speedIncrement+state.speedIncrement/4*q;const d=Math.abs(value-v);if(!best||d<best.diff){const elapsed=(level-1)*state.levelDuration+q*state.levelDuration/4;let total=0;for(let lv=1;lv<level;lv++)total+=Math.floor(state.levelDuration/intervalFor(lv));const part=Math.floor((q*state.levelDuration/4)/intervalFor(level));best={diff:d,vma:v,level,k:level,quarter:q,speed:speedAt(level),elapsed,time:formatTime(elapsed),totalShuttles:total+part,levelShuttles:part};}}}}return best;}
+function editStudentVma(id){const s=state.students.find(x=>x.id===Number(id));if(!s||!s.result){showToast('Aucun résultat individuel à modifier pour cet élève.');return;}const old=Number(s.result.vma);const raw=prompt(`Nouvelle VMA pour ${s.displayName} (km/h) :\nLe palier, le repère vocal, les navettes et le temps seront recalculés de manière cohérente.`,String(old.toFixed(3)).replace('.',','));if(raw===null)return;const value=Number(String(raw).trim().replace(',','.'));if(!Number.isFinite(value)||value<5||value>20){showToast('Saisis une VMA valide entre 5 et 20 km/h.');return;}const m=nearestVmaMapping(value);if(!m)return;if(Math.abs(m.vma-value)>0.001&&!confirm(`Cette VMA n’est pas une valeur exacte du protocole. La valeur la plus proche est ${m.vma.toFixed(3).replace('.',',')} km/h. Utiliser cette valeur et recalculer les données associées ?`))return;Object.assign(s.result,{level:m.level,k:m.k,speed:m.speed,quarter:m.quarter,vma:m.vma,elapsed:m.elapsed,time:m.time,totalShuttles:m.totalShuttles,levelShuttles:m.levelShuttles,manualVma:true});saveSessionNow();renderResults();showToast(`VMA corrigée : ${vmaText(s.result)} km/h · ${lvlText(s.result.level)} · ${quarterLabel(s.result)}.`);}
 function printResults(){
  const rows=resultRows();let sh=document.getElementById('printSheet');if(!sh){sh=document.createElement('div');sh.id='printSheet';document.body.appendChild(sh);}
  const old=document.getElementById('printStyle');if(old)old.remove();
@@ -642,16 +896,208 @@ ${PAT}
 <div class="sig">${SIGNATURE}</div>`;
  showToast('Choisis « Enregistrer au format PDF » dans la fenêtre d’impression.');setTimeout(()=>window.print(),300);
 }
-function exportExcel(){if(!window.XLSX){exportCSV();return;}const rows=buildExportRows();const ws=XLSX.utils.json_to_sheet(rows);ws['!cols']=Object.keys(rows[0]||{}).map(k=>({wch:Math.min(32,Math.max(14,k.length+2))}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Résultats Luc Léger');const summary=[['Test Luc Léger — Résumé'],['Fichier source',state.filename],['Date',new Date().toLocaleDateString('fr-FR')],['Élèves importés',state.students.length],['Participants sélectionnés',selectedStudents().length],['Protocole intégré',state.audioMode?'Bande-son Luc Léger officielle (20 min) — horloge audio + instants réels des 221 bips détectés dans le signal':'Simulation progressive — à vérifier selon la bande-son officielle'],['Vitesse de départ (km/h)',state.startSpeed],['Incrément (km/h)',state.speedIncrement],['Durée d’un palier (s)',state.levelDuration],['Distance de navette (m)',state.shuttleLength],['Calcul de la VMA','Vitesse du dernier palier complété + 0,125 km/h par repère vocal franchi (15 s, 30 s, 45 s) dans le palier d’arrêt'],['Numérotation des paliers',state.numbering==='first'?'Palier 1 dès le premier bip':'Comme la voix (échauffement É, puis palier 1 annoncé par la voix)']];const ws2=XLSX.utils.aoa_to_sheet(summary);ws2['!cols']=[{wch:32},{wch:70}];XLSX.utils.book_append_sheet(wb,ws2,'Paramètres');const base=(state.filename||'classe').replace(/\.[^.]+$/,'').replace(/[^a-z0-9_-]+/gi,'_');XLSX.writeFile(wb,`Resultats_Luc_Leger_${base}.xlsx`);showToast('Fichier Excel exporté.')}
+function normForMatch(v){return normAr(String(v??'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().replace(/[\s\u00a0]+/g,' ').trim();}
+function isVmaHeader(v){const n=normForMatch(v).replace(/[\u064B-\u065F\u0670]/g,'').replace(/[^a-z0-9\u0600-\u06FF]/g,'');return n.includes('vma')||n.includes('vitessemaximaleaerobie')||n.includes('vitesseaerobiquemaximale')||(n.includes('السرعة')&&n.includes('القصوي')&&n.includes('الهوا'));}
+function isStudentNameHeader(v){const n=normForMatch(v),c=n.replace(/[\s\u00a0]+/g,'');return n.includes('اسم التلميذ')||n.includes('اسم الطالب')||n.includes('الاسم الكامل')||c==='الاسموالنسب'||c==='اسمالتلميذ'||c==='الاسم' /* template Massar */||n==='nom et prenom'||n==='nom complet'||n==='nom prenom'||n==='nom (massar)'||n==='nom'||n==='eleve'||n==='student name';}
+function isStudentIdHeader(v){const n=normForMatch(v),c=n.replace(/[\s\u00a0]+/g,'').replace(/[^a-z0-9\u0600-\u06ff]/g,'');return c==='رقمالتلميذ'||c==='رقمالطالب'||c==='رقمالمسار'||c==='codemassar'||c==='nummassar'||c==='numeromassar'||n==='code eleve'||n==='code eleve massar'||n==='id massar'||n==='student id'||n==='id'||n==='matricule';}
+function studentMassarCode(st){
+ if(!st)return '';
+ // Valeur canonique capturée à l'importation : ne jamais la reconstruire à partir de l'index d'interface.
+ if(st.massarCode!==undefined&&st.massarCode!==null&&String(st.massarCode).trim()!=='')return String(st.massarCode).trim();
+ const raw=st.raw||{};let best='',bestScore=0;
+ for(const [k,v] of Object.entries(raw)){
+  const score=massarIdHeaderScore(k),value=String(v??'').trim();
+  if(value&&score>bestScore){best=value;bestScore=score;}
+ }
+ return best;
+}
+function classLabel(){const a=[...new Set(state.students.map(x=>String(x.className||'').trim()).filter(Boolean))];return a.join(', ')||'—';}
+function safeClassFileName(){const cls=classLabel()==='—'?'Classe':classLabel();return encodeURIComponent(cls).replace(/%20/g,'_').replace(/%2F/gi,'-').replace(/%5C/gi,'-').replace(/[^A-Za-z0-9_\-\u0600-\u06FF%]/g,'_');}
+async function exportSummaryExcel(){
+ if(!await ensureXlsxReady()){showToast('La bibliothèque Excel n’est pas disponible. Vérifie ta connexion puis recharge la page.');return;}
+ try{
+  const rows=resultRows(),cls=classLabel(),nPart=rows.filter(x=>x.selected).length;
+  const aoa=[['Test Luc Léger — Résultats'],['Classe',cls],['Date',new Date().toLocaleDateString('fr-FR')],['Distance entre lignes',`${state.shuttleLength} m`],['Participants',`${nPart} / ${rows.length}`],[],['Nom et prénom','Classe','Participant','Palier','Navettes du palier','VMA (km/h)','Navettes cumulées','Observation']];
+  rows.forEach(({student:s,selected:part,result:r})=>{
+   const obs=!part?motifLabel(s):!r?'Non évalué':r.source==='Arrêt individuel'?`Arrêt à ${r.time}${r.quarter>0?' · '+QUARTER_TEXT[r.quarter]:''}`:'Séance clôturée';
+   aoa.push([s.displayName,s.className||cls,part?'Oui':'Non',part&&r?(r.level>=1?r.level:'Échauffement'):'',part&&r?r.levelShuttles:'',part&&r?vmaText(r):'',part&&r?r.totalShuttles:'',obs]);
+  });
+  aoa.push([],['VMA (km/h) = vitesse du dernier palier complété + 0,125 km/h par repère vocal franchi (15, 30, 45 s) dans le palier d’arrêt.']);
+  const ws=XLSX.utils.aoa_to_sheet(aoa);ws['!cols']=[{wch:30},{wch:18},{wch:13},{wch:13},{wch:20},{wch:14},{wch:18},{wch:34}];ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:7}},{s:{r:aoa.length-1,c:0},e:{r:aoa.length-1,c:7}}];ws['!autofilter']={ref:`A7:H${7+rows.length}`};
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Bilan Luc Léger');XLSX.writeFile(wb,`Bilan_Luc_Leger_${safeClassFileName()}.xlsx`);showToast('Bilan Excel exporté : il reprend les mêmes informations que le PDF, avec le nom de la classe.');
+ }catch(e){console.error(e);showToast('Export du bilan Excel impossible : '+e.message);}
+}
+function findMassarSheet(wb){
+ let best=null;
+ for(const sn of wb.SheetNames){const ws=wb.Sheets[sn],grid=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:''});
+  for(let r=0;r<Math.min(grid.length,120);r++){
+   const row=grid[r]||[],nameCol=row.findIndex(isStudentNameHeader),vmaCol=row.findIndex(isVmaHeader),idHeader=pickMassarIdHeader(row,grid.slice(r+1,r+13)),idCol=idHeader?row.indexOf(idHeader):row.findIndex(isStudentIdHeader);
+   if(nameCol<0||vmaCol<0||idCol<0)continue;
+   const score=(/^evaluation$/i.test(sn)?100:0)+(r<5?20:0)+10;
+   if(!best||score>best.score)best={sheet:sn,row:r,nameCol,vmaCol,idCol,grid,score};
+  }
+ }
+ return best;
+}
+async function getMassarBaseWorkbookBytes(){
+ if(state.sourceWorkbookData)return (await asArrayBuffer(state.sourceWorkbookData)).slice(0);
+ // Modèle de référence propre, RTL et sans données d'élèves, embarqué pour éviter le blocage file://.
+ if(window.EPSMART_MASSAR_TEMPLATE_BASE64)return base64ToBuffer(window.EPSMART_MASSAR_TEMPLATE_BASE64);
+ const response=await fetch('templates/massar-evaluation-vierge.xlsx',{cache:'no-cache'});
+ if(!response.ok)throw new Error('Le modèle Massar vierge est introuvable. Vérifie le dossier templates dans le site publié.');
+ return await response.arrayBuffer();
+}
+const XLSX_MAIN_NS='http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+const XLSX_REL_NS='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const PACKAGE_REL_NS='http://schemas.openxmlformats.org/package/2006/relationships';
+function parseXmlDocument(xml,label){
+ const doc=new DOMParser().parseFromString(xml,'application/xml');
+ if(doc.getElementsByTagName('parsererror').length)throw new Error(`Le XML du classeur est invalide (${label}).`);
+ return doc;
+}
+function excelColumnLetters(index){let n=Number(index)+1,out='';while(n>0){const r=(n-1)%26;out=String.fromCharCode(65+r)+out;n=Math.floor((n-1)/26);}return out;}
+function excelColumnIndex(address){const m=/^([A-Z]+)/i.exec(String(address||''));if(!m)return -1;let n=0;for(const ch of m[1].toUpperCase())n=n*26+ch.charCodeAt(0)-64;return n-1;}
+function excelRowNumber(address){const m=/\d+$/.exec(String(address||''));return m?Number(m[0]):0;}
+async function getWorksheetZipPath(zip,sheetName){
+ const wbFile=zip.file('xl/workbook.xml'),relFile=zip.file('xl/_rels/workbook.xml.rels');
+ if(!wbFile||!relFile)throw new Error('Le classeur ne contient pas les relations Excel attendues.');
+ const wbDoc=parseXmlDocument(await wbFile.async('text'),'workbook.xml'),relDoc=parseXmlDocument(await relFile.async('text'),'workbook.xml.rels');
+ const sheet=[...wbDoc.getElementsByTagNameNS(XLSX_MAIN_NS,'sheet')].find(x=>x.getAttribute('name')===sheetName);
+ if(!sheet)throw new Error(`La feuille « ${sheetName} » est introuvable dans le classeur.`);
+ const rid=sheet.getAttributeNS(XLSX_REL_NS,'id')||sheet.getAttribute('r:id');
+ const rel=[...relDoc.getElementsByTagNameNS(PACKAGE_REL_NS,'Relationship')].find(x=>x.getAttribute('Id')===rid);
+ if(!rel)throw new Error('La relation vers la feuille Excel est introuvable.');
+ let target=String(rel.getAttribute('Target')||'').replace(/\\/g,'/');
+ if(target.startsWith('/'))target=target.slice(1);else if(!target.startsWith('xl/'))target='xl/'+target;
+ const parts=[];for(const part of target.split('/')){if(part==='..')parts.pop();else if(part!=='.'&&part)parts.push(part);}
+ return parts.join('/');
+}
+async function stripLegacySessionSheet(zip){
+ const wbFile=zip.file('xl/workbook.xml'),relFile=zip.file('xl/_rels/workbook.xml.rels');
+ if(!wbFile||!relFile)return false;
+ const wbText=await wbFile.async('text'),relText=await relFile.async('text');
+ const wbDoc=parseXmlDocument(wbText,'workbook.xml'),relDoc=parseXmlDocument(relText,'workbook.xml.rels');
+ const sheet=[...wbDoc.getElementsByTagNameNS(XLSX_MAIN_NS,'sheet')].find(x=>x.getAttribute('name')==='EPSMART_SESSION');
+ if(!sheet)return false;
+ const rid=sheet.getAttributeNS(XLSX_REL_NS,'id')||sheet.getAttribute('r:id');
+ const rel=[...relDoc.getElementsByTagNameNS(PACKAGE_REL_NS,'Relationship')].find(x=>x.getAttribute('Id')===rid);
+ let targetPath='';
+ if(rel){let target=String(rel.getAttribute('Target')||'').replace(/\\/g,'/');if(target.startsWith('/'))target=target.slice(1);else if(!target.startsWith('xl/'))target='xl/'+target;const parts=[];for(const part of target.split('/')){if(part==='..')parts.pop();else if(part!=='.'&&part)parts.push(part);}targetPath=parts.join('/');rel.parentNode.removeChild(rel);}
+ sheet.parentNode.removeChild(sheet);
+ zip.file('xl/workbook.xml',new XMLSerializer().serializeToString(wbDoc));
+ zip.file('xl/_rels/workbook.xml.rels',new XMLSerializer().serializeToString(relDoc));
+ if(targetPath){zip.remove(targetPath);const leaf=targetPath.split('/').pop(),folder=targetPath.slice(0,targetPath.lastIndexOf('/'));zip.remove(`${folder}/_rels/${leaf}.rels`);}
+ const ctFile=zip.file('[Content_Types].xml');
+ if(ctFile&&targetPath){const ctDoc=parseXmlDocument(await ctFile.async('text'),'[Content_Types].xml');const ctNs='http://schemas.openxmlformats.org/package/2006/content-types';for(const node of [...ctDoc.getElementsByTagNameNS(ctNs,'Override')]){const part=String(node.getAttribute('PartName')||'').replace(/^\//,'');if(part===targetPath)node.parentNode.removeChild(node);}zip.file('[Content_Types].xml',new XMLSerializer().serializeToString(ctDoc));}
+ return true;
+}
+function clearXmlCell(cell){
+ for(const child of [...cell.childNodes])cell.removeChild(child);
+ cell.removeAttribute('t');
+}
+function setXmlCellString(doc,ns,cell,value){
+ clearXmlCell(cell);const text=String(value??'');if(!text)return;
+ cell.setAttribute('t','inlineStr');const is=doc.createElementNS(ns,'is'),t=doc.createElementNS(ns,'t');
+ if(/^\s|\s$/.test(text))t.setAttributeNS('http://www.w3.org/XML/1998/namespace','xml:space','preserve');
+ t.textContent=text;is.appendChild(t);cell.appendChild(is);
+}
+function setXmlCellNumber(doc,ns,cell,value){
+ clearXmlCell(cell);if(value===null||value===undefined||value==='')return;
+ const n=Number(value);if(!Number.isFinite(n))return;
+ const v=doc.createElementNS(ns,'v');v.textContent=String(Number(n.toFixed(3)));cell.appendChild(v);
+}
+function clearXmlCellValue(cell){clearXmlCell(cell);}
+function ensureXmlCell(doc,ns,row,rowNum,colIndex,styleRow){
+ const wanted=excelColumnLetters(colIndex)+rowNum;
+ let cell=[...row.children].find(x=>x.localName==='c'&&excelColumnIndex(x.getAttribute('r'))===colIndex);
+ if(cell)return cell;
+ cell=doc.createElementNS(ns,'c');cell.setAttribute('r',wanted);
+ const template=[...(styleRow?.children||[])].find(x=>x.localName==='c'&&excelColumnIndex(x.getAttribute('r'))===colIndex);
+ if(template&&template.hasAttribute('s'))cell.setAttribute('s',template.getAttribute('s'));
+ const before=[...row.children].find(x=>x.localName==='c'&&excelColumnIndex(x.getAttribute('r'))>colIndex);
+ if(before)row.insertBefore(cell,before);else{
+  const ext=[...row.children].find(x=>x.localName==='extLst');if(ext)row.insertBefore(cell,ext);else row.appendChild(cell);
+ }
+ return cell;
+}
+function insertXmlRow(sheetData,doc,ns,rowNum,templateRow){
+ if(!templateRow)throw new Error('Impossible d’ajouter des lignes : aucune ligne de modèle disponible.');
+ const row=templateRow.cloneNode(true);row.setAttribute('r',String(rowNum));
+ for(const cell of [...row.children].filter(x=>x.localName==='c')){
+  const col=excelColumnLetters(excelColumnIndex(cell.getAttribute('r')));cell.setAttribute('r',col+rowNum);clearXmlCellValue(cell);
+ }
+ const next=[...sheetData.children].find(x=>x.localName==='row'&&Number(x.getAttribute('r'))>rowNum);
+ if(next)sheetData.insertBefore(row,next);else sheetData.appendChild(row);
+ return row;
+}
+async function buildMassarExportBlob(target,students){
+ if(!await ensureJSZipReady())throw new Error('La bibliothèque de préservation Excel est indisponible. Vérifie la connexion puis recharge le site.');
+ const sourceBytes=await getMassarBaseWorkbookBytes();
+ // On lit le modèle une première fois pour identifier les colonnes ; puis on n'écrit pas le classeur avec SheetJS.
+ const metaWb=XLSX.read(sourceBytes,{type:'array',cellStyles:true,cellNF:true,cellDates:true});
+ const actualTarget=findMassarSheet(metaWb);if(!actualTarget)throw new Error('La feuille du modèle ne contient pas les colonnes numéro Massar, nom et VMA.');
+ const zip=await JSZip.loadAsync(sourceBytes);await stripLegacySessionSheet(zip);const sheetPath=await getWorksheetZipPath(zip,actualTarget.sheet),sheetFile=zip.file(sheetPath);
+ if(!sheetFile)throw new Error(`Le contenu XML de la feuille ${actualTarget.sheet} est introuvable.`);
+ const sheetText=await sheetFile.async('text'),doc=parseXmlDocument(sheetText,sheetPath),ns=doc.documentElement.namespaceURI||XLSX_MAIN_NS;
+ const sheetData=doc.getElementsByTagNameNS(ns,'sheetData')[0];if(!sheetData)throw new Error('La feuille Excel ne contient pas de zone de données.');
+ const headerRow=actualTarget.row+1,firstDataRow=headerRow+1;
+ let rows=[...sheetData.children].filter(x=>x.localName==='row');
+ let lastExistingRow=Math.max(firstDataRow,...rows.map(x=>Number(x.getAttribute('r'))||0));
+ let templateRow=rows.filter(x=>Number(x.getAttribute('r'))>=firstDataRow).slice(-1)[0]||rows[rows.length-1];
+ // Prépare assez de lignes et garde le style de la dernière ligne originale pour les ajouts.
+ const requiredLast=firstDataRow+students.length-1;
+ for(let rn=lastExistingRow+1;rn<=requiredLast;rn++){
+  const added=insertXmlRow(sheetData,doc,ns,rn,templateRow);rows.push(added);templateRow=added;
+ }
+ rows=[...sheetData.children].filter(x=>x.localName==='row');
+ // Nettoie seulement les colonnes identité (A/B) et VMA (F), sans retoucher les mesures ni les styles.
+ for(const row of rows){const rn=Number(row.getAttribute('r'));if(rn<firstDataRow)continue;
+  for(const col of [actualTarget.idCol,actualTarget.nameCol,actualTarget.vmaCol]){
+   const cell=ensureXmlCell(doc,ns,row,rn,col,templateRow);clearXmlCellValue(cell);
+  }
+ }
+ let filled=0;
+ students.forEach((student,i)=>{
+  const rn=firstDataRow+i;let row=rows.find(x=>Number(x.getAttribute('r'))===rn);
+  if(!row){row=insertXmlRow(sheetData,doc,ns,rn,templateRow);rows.push(row);}
+  const idCell=ensureXmlCell(doc,ns,row,rn,actualTarget.idCol,templateRow);
+  const nameCell=ensureXmlCell(doc,ns,row,rn,actualTarget.nameCol,templateRow);
+  const vmaCell=ensureXmlCell(doc,ns,row,rn,actualTarget.vmaCol,templateRow);
+  const code=studentMassarCode(student),name=String(student.displayName||'').trim();
+  // Le numéro vient uniquement du fichier/import ou de la saisie. student.id est un index UI, jamais un identifiant Massar.
+  setXmlCellString(doc,ns,idCell,code);setXmlCellString(doc,ns,nameCell,name);
+  const vma=student.result&&Number.isFinite(Number(student.result.vma))?Number(student.result.vma):null;
+  if(vma!==null){setXmlCellNumber(doc,ns,vmaCell,vma);filled++;}else clearXmlCellValue(vmaCell);
+ });
+ // Met à jour la dimension si des élèves ont dépassé le nombre de lignes du modèle.
+ const dim=doc.getElementsByTagNameNS(ns,'dimension')[0];
+ if(dim){const old=dim.getAttribute('ref')||'A1:L46';const m=/^([A-Z]+\d+):([A-Z]+)(\d+)$/i.exec(old);const endCol=m?m[2]:'L';const oldEnd=m?Number(m[3]):lastExistingRow;dim.setAttribute('ref',`A1:${endCol}${Math.max(oldEnd,requiredLast)}`);}
+ const xmlOut=new XMLSerializer().serializeToString(doc);zip.file(sheetPath,xmlOut);
+ const blob=await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',compression:'DEFLATE',compressionOptions:{level:6}});
+ return {blob,filled,rows:students.length};
+}
+function downloadXlsxBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+async function exportMassarTemplate(){
+ if(!state.students.length){showToast('Importe ou saisis d’abord une liste d’élèves.');return;}
+ if(!await ensureXlsxReady()){showToast('La bibliothèque de lecture Excel n’est pas disponible. Vérifie ta connexion puis recharge le site.');return;}
+ try{
+  const bytes=await getMassarBaseWorkbookBytes();const metaWb=XLSX.read(bytes,{type:'array',cellStyles:true,cellNF:true,cellDates:true});
+  const target=findMassarSheet(metaWb);if(!target)throw new Error('La feuille du modèle ne contient pas les colonnes numéro Massar, nom et VMA.');
+  const result=await buildMassarExportBlob(target,state.students),cls=safeClassFileName();
+  downloadXlsxBlob(result.blob,`EPSMART_MassarVMA_${cls}.xlsx`);
+  const knownIds=state.students.filter(s=>!!studentMassarCode(s)).length,missingIds=state.students.length-knownIds;
+  showToast(`Classeur Massar exporté : ${result.rows} élèves dans l’ordre d’origine, ${knownIds} numéros Massar conservés à l’identique, ${result.filled} VMA renseignée(s)${missingIds?`, ${missingIds} identifiant(s) absent(s) dans l’import (cellules laissées vides)`:''}.`);
+ }catch(e){console.error(e);showToast('Export Massar impossible : '+e.message);}
+}
 function exportPDF(){printResults();}
-function openHelp(){ $('modalTitle').textContent='Mode d’emploi';$('modalText').innerHTML='1. Importe la liste (Excel/CSV, ou liste Massar .xlsx : noms en arabe, classe lue dans le nom du fichier) et coche le groupe qui court (jusqu’à ~15 : chaque élève a un numéro de couloir cerclé, à relier aux plots du terrain).<br><br>2. Avant le test (avec du réseau), clique sur « ① Télécharger la bande-son dans l’appareil » et attends le message vert « en mémoire ». La piste est gardée sur l’appareil : les fois suivantes et hors ligne, elle est retrouvée toute seule. Si le téléchargement automatique échoue, ouvre « Importer le MP3 à la main ». La piste est reconnue d’après sa durée et le début du mouvement se règle tout seul. Le lancement est bloqué tant que la piste n’est pas entièrement en mémoire, pour éviter toute coupure<br><br>3. La voix de la bande-son pilote l’affichage : le palier change quand la voix l’annonce, et les repères « 15 », « 30 », « 45 » secondes sont suivis en direct (graduations sur la barre de palier). La 1re minute à 8,5 km/h est un échauffement (É), puis la voix annonce le palier 1. Si ta voix annonce un autre numéro que l’écran, change « Numérotation des paliers ». Les avatars avancent d’une ligne à l’autre exactement entre les vrais bips. Utilise ± 0,05 s si l’avatar est décalé par rapport au son<br><br>4. Touche le nom de l’élève quand il s’arrête : le palier et le dernier repère de 15 s entendu sont enregistrés, et la VMA est calculée (vitesse du dernier palier complété + 0,125 km/h par repère franchi). Tu peux annuler le dernier arrêt. Pour enchaîner avec le reste de la classe, utilise « ⏭ Groupe suivant » (en bas du terrain) : les résultats du groupe sont conservés et les élèves suivants sont cochés d’avance. En plein soleil, le bouton « ☀ Mode clair » passe l’interface en thème clair très contrasté. Au bout du dernier groupe, la page demande le motif de ceux qui n’ont pas couru (absent, malade, dispensé, autre, ou « plus tard » s’ils passent dans un autre groupe : bouton « Tester un autre groupe »). Exporte ensuite en Excel ou en PDF (impression « Enregistrer au format PDF »).<br><br><b>Important :</b> ne déplace pas le curseur du lecteur pendant le test.';$('modalBackdrop').classList.remove('hidden')}
-$('chooseFileBtn').addEventListener('click',()=>$('fileInput').click());$('fileInput').addEventListener('change',e=>importFile(e.target.files[0]));$('chooseMassarBtn').addEventListener('click',()=>$('massarInput').click());$('massarInput').addEventListener('change',e=>{importFile(e.target.files[0],true);e.target.value='';});$('audioFile').addEventListener('change',e=>loadReferenceAudio(e.target.files[0]));document.querySelectorAll('[data-nudge]').forEach(b=>b.addEventListener('click',()=>{state.audioStartOffset=Math.max(0,Math.round((state.audioStartOffset+Number(b.dataset.nudge))*100)/100);$('audioStartOffset').value=state.audioStartOffset.toFixed(2);$('nudgeValue').textContent='décalage '+state.audioStartOffset.toFixed(2)+' s';}));$('downloadTrackBtn').addEventListener('click',downloadTrack);$('clearAudioBtn').addEventListener('click',clearReferenceAudio);$('forgetTrackBtn').addEventListener('click',trackForget);$('referenceAudio').addEventListener('loadedmetadata',()=>{if(!state.audioMode)return;const d=$('referenceAudio').duration;const k=recogniseAudio(d);const st=$('audioFileStatus');if(k){state.audioStartOffset=k.firstBeep;$('audioStartOffset').value=k.firstBeep.toFixed(2);st.textContent=`✓ Piste reconnue : ${k.name} · durée ${formatTime(d)} · début du mouvement réglé automatiquement sur ${k.firstBeep.toFixed(2).replace('.',',')} s (premier bip). Bande-son entièrement en mémoire : aucune coupure possible. Les avatars suivent les 221 bips mesurés.`;st.style.color='var(--lime)';$('dlWrap').classList.add('hidden');showToast('Piste reconnue : synchronisation prête.');}else{st.textContent=`⚠ Piste non reconnue (durée ${Number.isFinite(d)?formatTime(d):'?'}). Les durées connues sont 20:26 (luc-leger-20mn.mp3) et 20:10 (audio officiel). Importe plutôt le MP3 téléchargé via ①, ou règle le début du mouvement à la main et envoie-moi ce fichier pour le mesurer.`;st.style.color='var(--amber, #f5b942)';showToast('Piste non reconnue : synchronisation incertaine.');}});$('referenceAudio').addEventListener('error',()=>{if(!state.audioMode)return;$('audioFileStatus').textContent='Ce fichier audio n’a pas pu être lu. Importe un MP3 valide.';$('audioFileStatus').style.color='var(--red)';showToast('Fichier audio illisible.');});$('removeFileBtn').addEventListener('click',resetImport);$('studentSearch').addEventListener('input',renderStudents);$('selectAllBtn').addEventListener('click',()=>{state.students.forEach(s=>{if(!s.result)s.selected=true});renderStudents()});$('selectNextBtn').addEventListener('click',()=>{state.students.forEach(s=>{if(!s.result)s.selected=false});let n=0;for(const s of state.students){if(!canAuto(s))continue;if(n<15){s.selected=true;n++;}}renderStudents();showToast(n?`${n} élève(s) cochés (couloirs 1 à ${n}).`:'Tous les élèves ont déjà été testés.');});$('selectNoneBtn').addEventListener('click',()=>{state.students.forEach(s=>{if(!s.result)s.selected=false});renderStudents()});$('startBtn').addEventListener('click',startPreparation);$('pauseBtn').addEventListener('click',togglePause);$('soundBtn').addEventListener('click',toggleSound);$('undoBtn').addEventListener('click',undoStop);$('finishBtn').addEventListener('click',finishSession);$('backBtn').addEventListener('click',()=>{setView('setup');showToast('Tu peux vérifier la sélection ou préparer une nouvelle séance. Les résultats actuels restent disponibles jusqu’au prochain test.');});$('newSessionBtn').addEventListener('click',()=>{state.started=false;state.paused=false;cancelAnimationFrame(state.raf);if(state.referenceAudio)state.referenceAudio.pause();setView('setup')});$('nextGroupBtn').addEventListener('click',()=>{state.started=false;state.paused=false;cancelAnimationFrame(state.raf);if(state.referenceAudio)state.referenceAudio.pause();goNextGroup();});$('nextGroupLiveBtn').addEventListener('click',nextGroupFromLive);document.querySelectorAll('.theme-toggle').forEach(b=>b.addEventListener('click',toggleTheme));$('aboutBtn').addEventListener('click',openAbout);applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'light':'dark');setInterval(updateHero,1000);updateHero();$('exportExcelBtn').addEventListener('click',exportExcel);$('exportPdfBtn').addEventListener('click',exportPDF);$('helpBtn').addEventListener('click',openHelp);$('modalClose').addEventListener('click',()=>$('modalBackdrop').classList.add('hidden'));$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))$('modalBackdrop').classList.add('hidden')});
-const dz=$('dropzone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('dragover')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('dragover')}));dz.addEventListener('drop',e=>{const f=e.dataTransfer?.files?.[0];if(f)importFile(f)});
-initSavedTrack();
+function openHelp(){ $('modalTitle').textContent='Mode d’emploi';$('modalText').innerHTML='1. Choisis l’un des quatre modes d’importation : liste Massar de contrôle (numéro et nom, classe reconnue depuis le fichier), classeur EPS de mesures et tests (le site demande la classe), saisie manuelle, ou modèle Excel vierge fourni par EPSMART et complété par le professeur. Le fichier final Massar exporté peut aussi être réimporté : les VMA déjà présentes sont reconnues et les élèves sans VMA restent à tester.<br><br>2. La bande-son se charge toute seule à la première ouverture avec Internet. Attends « Prête » dans le tableau de bord. Le fichier MP3 est gardé sur l’appareil pour les ouvertures suivantes. Si le chargement échoue, importe le MP3 à la main. La piste est reconnue d’après sa durée et le début du mouvement est réglé automatiquement.<br><br>3. La voix de la bande-son pilote l’affichage : le palier change quand la voix l’annonce, et les repères « 15 », « 30 », « 45 » secondes sont suivis en direct. La première minute à 8,5 km/h est un échauffement (É), puis la voix annonce le palier 1. Si la numérotation ne correspond pas à la voix, change « Numérotation des paliers ».<br><br>4. Touche le nom de l’élève quand il s’arrête : le palier, les navettes, le repère vocal et la VMA sont enregistrés. Un élève qui rejoint le test en cours peut être ajouté depuis « Ajouter un participant ». Les élèves qui n’ont pas couru restent « À tester ». Tu peux corriger une VMA dans le bilan ; le palier, le repère vocal, les navettes et le temps associés sont recalculés.<br><br>5. Trois exports sont proposés : 1) le PDF du bilan habituel, inchangé ; 2) un fichier Excel qui reprend les mêmes informations que le PDF, y compris la classe ; 3) le classeur final Massar, au format du modèle fourni. Le 3e fichier garde les mesures et les autres tests du classeur importé, remet la liste et les numéros dans l’ordre, puis écrit les VMA en colonne F. La cellule VMA des élèves non passés reste vide. C’est ce fichier qui sert de format uniforme de reprise : réimporte-le à la séance suivante, même depuis un autre ordinateur. Chaque nouvel import remplace complètement la liste précédente : le stockage local et les anciennes feuilles techniques cachées ne réinjectent jamais de résultats. Seules les VMA visibles dans le fichier importé sont reprises.<br><br><b>Important :</b> ne déplace pas le curseur du lecteur pendant le test.';$('modalBackdrop').classList.remove('hidden')}
+$('addStudentSetupBtn').addEventListener('click',()=>addStudentPrompt('setup'));$('addStudentLiveBtn').addEventListener('click',()=>addStudentPrompt('live'));$('addStudentResultsBtn').addEventListener('click',()=>addStudentPrompt('results'));$('motifEditBtn').addEventListener('click',()=>openMotifModal(()=>{renderResults();saveSessionNow();},()=>{},null));$('exportMassarBtn').addEventListener('click',exportMassarTemplate);$('chooseMassarBtn').addEventListener('click',()=>$('massarInput').click());$('massarInput').addEventListener('change',e=>{importFile(e.target.files[0],'massar-roster');e.target.value='';});$('chooseSportBtn').addEventListener('click',()=>$('sportInput').click());$('sportInput').addEventListener('change',e=>{importFile(e.target.files[0],'sport');e.target.value='';});$('chooseBlankFilledBtn').addEventListener('click',()=>$('blankFilledInput').click());$('blankFilledInput').addEventListener('change',e=>{importFile(e.target.files[0],'blank-filled');e.target.value='';});$('manualEntryBtn').addEventListener('click',openManualEntry);$('manualCancelBtn').addEventListener('click',()=>$('manualBackdrop').classList.add('hidden'));$('manualSaveBtn').addEventListener('click',saveManualEntry);$('manualBackdrop').addEventListener('click',e=>{if(e.target===$('manualBackdrop'))$('manualBackdrop').classList.add('hidden');});$('audioFile').addEventListener('change',e=>loadReferenceAudio(e.target.files[0]));document.querySelectorAll('[data-nudge]').forEach(b=>b.addEventListener('click',()=>{state.audioStartOffset=Math.max(0,Math.round((state.audioStartOffset+Number(b.dataset.nudge))*100)/100);$('audioStartOffset').value=state.audioStartOffset.toFixed(2);$('nudgeValue').textContent='décalage '+state.audioStartOffset.toFixed(2)+' s';}));$('downloadTrackBtn').addEventListener('click',downloadTrack);$('clearAudioBtn').addEventListener('click',clearReferenceAudio);$('forgetTrackBtn').addEventListener('click',trackForget);$('referenceAudio').addEventListener('loadedmetadata',()=>{if(!state.audioMode)return;const d=$('referenceAudio').duration;const k=recogniseAudio(d);const st=$('audioFileStatus');if(k){state.audioStartOffset=k.firstBeep;$('audioStartOffset').value=k.firstBeep.toFixed(2);st.textContent=`✓ Piste reconnue : ${k.name} · durée ${formatTime(d)} · début du mouvement réglé automatiquement sur ${k.firstBeep.toFixed(2).replace('.',',')} s (premier bip). Bande-son entièrement en mémoire : aucune coupure possible. Les avatars suivent les 221 bips mesurés.`;st.style.color='var(--lime)';$('dlWrap').classList.add('hidden');showToast('Piste reconnue : synchronisation prête.');}else{st.textContent=`⚠ Piste non reconnue (durée ${Number.isFinite(d)?formatTime(d):'?'}). Les durées connues sont 20:26 (luc-leger-20mn.mp3) et 20:10 (audio officiel). Importe plutôt le MP3 téléchargé via ①, ou règle le début du mouvement à la main et envoie-moi ce fichier pour le mesurer.`;st.style.color='var(--amber, #f5b942)';showToast('Piste non reconnue : synchronisation incertaine.');}});$('referenceAudio').addEventListener('error',()=>{if(!state.audioMode)return;$('audioFileStatus').textContent='Ce fichier audio n’a pas pu être lu. Importe un MP3 valide.';$('audioFileStatus').style.color='var(--red)';showToast('Fichier audio illisible.');});$('removeFileBtn').addEventListener('click',resetImport);$('studentSearch').addEventListener('input',renderStudents);$('selectAllBtn').addEventListener('click',()=>{state.students.forEach(s=>{if(!s.result)setSel(s,true)});renderStudents()});$('selectNextBtn').addEventListener('click',()=>{state.students.forEach(s=>{if(!s.result)setSel(s,false)});let n=0;for(const s of state.students){if(!canAuto(s))continue;if(n<15){setSel(s,true);n++;}}renderStudents();const b=laneBase();showToast(n?`${n} élève(s) cochés (couloirs ${b+1} à ${b+n}).`:'Tous les élèves ont déjà été testés.');});$('selectNoneBtn').addEventListener('click',()=>{state.students.forEach(s=>{if(!s.result)setSel(s,false)});renderStudents()});$('laneMode').addEventListener('change',()=>{state.laneMode=$('laneMode').value;refreshSelBadges();});$('startBtn').addEventListener('click',startPreparation);$('pauseBtn').addEventListener('click',togglePause);$('restartBtn').addEventListener('click',restartTest);$('soundBtn').addEventListener('click',toggleSound);$('undoBtn').addEventListener('click',undoStop);$('finishBtn').addEventListener('click',finishSession);$('backBtn').addEventListener('click',()=>{setView('setup');showToast('Tu peux vérifier la sélection ou préparer une nouvelle séance. Les résultats actuels restent disponibles jusqu’au prochain test.');});$('newSessionBtn').addEventListener('click',()=>{state.started=false;state.paused=false;cancelAnimationFrame(state.raf);if(state.referenceAudio)state.referenceAudio.pause();renderStudents();setView('setup');saveSessionNow();});$('nextGroupBtn').addEventListener('click',()=>{state.started=false;state.paused=false;cancelAnimationFrame(state.raf);if(state.referenceAudio)state.referenceAudio.pause();goNextGroup();});$('nextGroupLiveBtn').addEventListener('click',nextGroupFromLive);document.querySelectorAll('.theme-toggle').forEach(b=>b.addEventListener('click',toggleTheme));$('aboutBtn').addEventListener('click',openAbout);applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'light':'dark');setInterval(updateHero,1000);updateHero();$('exportSummaryExcelBtn').addEventListener('click',exportSummaryExcel);$('exportPdfBtn').addEventListener('click',exportPDF);$('helpBtn').addEventListener('click',openHelp);$('modalClose').addEventListener('click',()=>$('modalBackdrop').classList.add('hidden'));$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))$('modalBackdrop').classList.add('hidden')});
+const dz=$('dropzone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('dragover')}));['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('dragover')}));dz.addEventListener('drop',e=>{const f=e.dataTransfer?.files?.[0];if(f)importFile(f,'auto')});
+initSavedTrack().then(found=>{if(!found)downloadTrack();}).catch(()=>downloadTrack());
 // Mode hors ligne : la page est gardée sur l'appareil après la 1re visite (uniquement en http/https, donc sur GitHub Pages)
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
-window.addEventListener('beforeunload',e=>{if(state.started){e.preventDefault();e.returnValue='';}if(state.audioObjectURL)URL.revokeObjectURL(state.audioObjectURL);});
-renderStudents();
+window.addEventListener('beforeunload',e=>{saveSessionNow();if(state.started){e.preventDefault();e.returnValue='';}if(state.audioObjectURL)URL.revokeObjectURL(state.audioObjectURL);});
+const restored=restoreSavedSession();renderStudents();if(restored){if(state.stage==='results'&&!state.started){renderResults();setView('results');}else{setView('setup');}showToast(`Séance récupérée : ${state.students.filter(x=>x.result).length} résultats conservés, ${state.students.filter(canAuto).length} élève(s) encore à tester.`);}
 })();
 </script>
 </body>
